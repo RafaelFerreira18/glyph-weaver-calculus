@@ -114,6 +114,10 @@ function templateFeatures(strokeTemplate) {
   }
 
   const strokes = strokeTemplate?.strokes ?? [];
+  // Filtra strokes de comprimento zero (artefatos de captura do template maker,
+  // como toques únicos). Eles contribuem minimamente para o bitmap de tinta,
+  // mas inflam artificialmente o strokeCount e penalizam demais o usuário.
+  const meaningfulStrokes = strokes.filter((s) => pathLength(s) > 0.001);
   const points = strokes.flat();
   const bounds = boundsForPoints(points);
   const width = Math.max(0.001, bounds.width);
@@ -121,9 +125,9 @@ function templateFeatures(strokeTemplate) {
   const features = {
     aspectRatio: aspectRatio(width, height),
     elongation: Math.max(width, height) / Math.max(0.001, Math.min(width, height)),
-    strokeCount: strokes.length,
+    strokeCount: meaningfulStrokes.length,
     orientationDeg: dominantAxisOrientationDeg(points),
-    strokeProfile: strokeLengthProfile(strokes, (stroke) => stroke)
+    strokeProfile: strokeLengthProfile(meaningfulStrokes, (stroke) => stroke)
   };
   templateFeatureCache.set(strokeTemplate, features);
   return features;

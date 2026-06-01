@@ -44,7 +44,10 @@ export class CanvasRenderer {
       drawRingDebug(this.glyphCtx, pipeline.ring);
     }
 
-    if (showDebug) {
+    // Rótulos de reconhecimento visíveis sempre que Guias está ativo —
+    // mostram o sigilo detectado e a confiança (ex: "fire 89") e os IDs
+    // dos traços (ex: "s5"), útil para aprendizado e apresentação.
+    if (showGuides || showDebug) {
       drawCandidateDebug(this.glyphCtx, pipeline?.candidates, pipeline?.recognitions);
       drawStrokeIdDebug(this.glyphCtx, strokes);
     }

@@ -1,0 +1,1111 @@
+/* ============================================================
+   Glyph Weaver: Atelier do Gradiente — Tema Pergaminho
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&display=swap');
+
+/* ---------- Custom Properties ---------- */
+:root {
+  --cor-pergaminho: #f4e4c1;
+  --cor-pergaminho-escuro: #d4c4a1;
+  --cor-sepia: #8B4513;
+  --cor-tinta: #2c1810;
+  --cor-dourado: #c9a84c;
+  --cor-dourado-brilho: #ffd700;
+  --cor-esmeralda: #00ff88;
+  --cor-esmeralda-escuro: #00cc6a;
+  --cor-rubi: #ff3366;
+  --cor-sombra: rgba(44, 24, 16, 0.3);
+  --fonte-corpo: 'IM Fell English', serif;
+  --fonte-display: 'Cinzel Decorative', cursive;
+  --fonte-codigo: 'Courier New', monospace;
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--cor-pergaminho);
+  color: var(--cor-tinta);
+  font-family: var(--fonte-corpo);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: var(--fonte-display);
+  color: var(--cor-sepia);
+  line-height: 1.3;
+}
+
+a {
+  color: var(--cor-sepia);
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--cor-dourado);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cor-pergaminho-escuro);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cor-sepia);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cor-dourado);
+}
+
+/* ---------- Layout: Página Pergaminho ---------- */
+.pagina-pergaminho {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(139, 69, 19, 0.03) 28px,
+      rgba(139, 69, 19, 0.03) 29px
+    ),
+    linear-gradient(
+      135deg,
+      var(--cor-pergaminho) 0%,
+      #efe0be 25%,
+      var(--cor-pergaminho) 50%,
+      #efe0be 75%,
+      var(--cor-pergaminho) 100%
+    );
+}
+
+/* ---------- Título Principal ---------- */
+.titulo-principal {
+  font-family: var(--fonte-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  color: var(--cor-sepia);
+  text-shadow:
+    0 0 10px var(--cor-dourado),
+    0 2px 4px var(--cor-sombra);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Botão Mágico ---------- */
+.botao-magico {
+  display: inline-block;
+  font-family: var(--fonte-display);
+  font-size: 1rem;
+  color: var(--cor-pergaminho);
+  background: var(--cor-sepia);
+  border: 2px solid var(--cor-dourado);
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.35s ease;
+  text-decoration: none;
+}
+
+.botao-magico:hover {
+  background: var(--cor-dourado);
+  color: var(--cor-tinta);
+  box-shadow:
+    0 0 16px var(--cor-esmeralda),
+    0 0 32px rgba(0, 255, 136, 0.25);
+  border-color: var(--cor-esmeralda);
+}
+
+.botao-magico:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Painel ---------- */
+.painel {
+  background:
+    linear-gradient(
+      180deg,
+      var(--cor-pergaminho) 0%,
+      var(--cor-pergaminho-escuro) 100%
+    );
+  border: 1px solid var(--cor-sepia);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px var(--cor-sombra);
+  transition: box-shadow 0.3s;
+}
+
+.painel:hover {
+  box-shadow: 0 6px 20px var(--cor-sombra);
+}
+
+/* ---------- Campo Fórmula ---------- */
+.campo-formula {
+  width: 100%;
+  font-family: var(--fonte-codigo);
+  font-size: 1.1rem;
+  color: var(--cor-tinta);
+  background: var(--cor-pergaminho);
+  border: 2px solid var(--cor-sepia);
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.campo-formula:focus {
+  border-color: var(--cor-dourado);
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.4);
+}
+
+.campo-formula::placeholder {
+  color: var(--cor-sepia);
+  opacity: 0.5;
+}
+
+/* ---------- Resultado ---------- */
+.resultado {
+  background: var(--cor-tinta);
+  color: var(--cor-pergaminho);
+  font-family: var(--fonte-codigo);
+  font-size: 0.95rem;
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--cor-esmeralda);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 2.5rem;
+}
+
+.resultado .valor {
+  color: var(--cor-esmeralda);
+  font-weight: bold;
+}
+
+.resultado .erro {
+  color: var(--cor-rubi);
+}
+
+/* ---------- Grid Demo ---------- */
+.grid-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .grid-demo {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Superfície 3D ---------- */
+.superficie-3d {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 2px solid var(--cor-sepia);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a2e;
+  position: relative;
+}
+
+.superficie-3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ---------- Utilitários ---------- */
+.texto-centro { text-align: center; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.grupo-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.botao-sigilo {
+  font-family: var(--fonte-corpo);
+  font-size: 0.9rem;
+  color: var(--cor-tinta);
+  background: var(--cor-pergaminho-escuro);
+  border: 1px solid var(--cor-sepia);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.botao-sigilo:hover {
+  background: var(--cor-dourado);
+  color: var(--cor-pergaminho);
+  border-color: var(--cor-dourado-brilho);
+}
+
+.subtitulo {
+  font-family: var(--fonte-corpo);
+  font-style: italic;
+  font-size: 1.15rem;
+  text-align: center;
+  color: var(--cor-sepia);
+  margin-bottom: 1.5rem;
+}
+
+.decoracao-glifos {
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 1rem;
+  color: var(--cor-dourado);
+  opacity: 0.35;
+  user-select: none;
+  margin: 1.5rem 0;
+}
+
+.avaliacao-ponto {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.avaliacao-ponto label {
+  font-weight: bold;
+  color: var(--cor-sepia);
+}
+
+.avaliacao-ponto input {
+  width: 5rem;
+  font-family: var(--fonte-codigo);
+  font-size: 1rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--cor-sepia);
+  border-radius: 4px;
+  background: var(--cor-pergaminho);
+  color: var(--cor-tinta);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+  color: var(--cor-sepia);
+  opacity: 0.7;
+  border-top: 1px solid var(--cor-pergaminho-escuro);
+  margin-top: 2rem;
+}
+
+/* ================================================================
+   LAYOUT RPG — Atelier do Gradiente
+   ================================================================ */
+
+.rpg-corpo {
+  background: #0d0703;
+  overflow: hidden;
+  height: 100dvh;
+}
+
+.rpg-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── HUD superior ── */
+.rpg-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  background: linear-gradient(180deg, #1a0f05 0%, #0d0703 100%);
+  border-bottom: 2px solid var(--cor-dourado);
+  padding: 0 1rem;
+  flex-shrink: 0;
+  gap: 0.75rem;
+  z-index: 20;
+}
+
+.hud-esquerda,
+.hud-direita {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.hud-centro {
+  flex: 1;
+  text-align: center;
+}
+
+.hud-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.95rem;
+  color: var(--cor-dourado);
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.hud-ano {
+  font-family: var(--fonte-corpo);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: rgba(212, 196, 161, 0.6);
+  white-space: nowrap;
+}
+
+.hud-voltar {
+  font-family: var(--fonte-corpo);
+  font-size: 0.8rem;
+  color: var(--cor-dourado);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.hud-voltar:hover { color: var(--cor-esmeralda); }
+
+.hud-btn {
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  background: transparent;
+  border: 1px solid rgba(139, 69, 19, 0.6);
+  color: rgba(212, 196, 161, 0.7);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hud-btn:hover {
+  border-color: var(--cor-dourado);
+  color: var(--cor-dourado);
+}
+
+.hud-btn-perigo:hover {
+  border-color: var(--cor-rubi);
+  color: var(--cor-rubi);
+}
+
+.hud-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.hud-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  color: rgba(212, 196, 161, 0.7);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Elementos necessários internamente mas ocultos da UI RPG */
+.rpg-oculto {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ── Área principal ── */
+.rpg-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Canvas de sigilos ── */
+.rpg-canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #060302;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Override: no RPG o canvas-shell preenche a área inteira */
+.rpg-canvas-area .canvas-shell {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.rpg-canvas-area .canvas-shell canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Suaviza o efeito de inclinação do paper no layout RPG */
+.rpg-canvas-area .canvas-shell.portal-active {
+  transform: perspective(1000px) rotateX(1deg);
+}
+
+/* A dica já existe como .canvas-hint no código original */
+.rpg-canvas-area .canvas-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: rgba(212, 196, 161, 0.35);
+  pointer-events: none;
+  z-index: 5;
+  width: 70%;
+  line-height: 1.6;
+  transition: opacity 0.4s;
+}
+
+.rpg-canvas-area .canvas-hint.hidden { opacity: 0; }
+
+/* ── Painel de desafio (problema matemático atual) ── */
+.desafio-panel {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(135deg, rgba(244, 220, 149, 0.95) 0%, rgba(210, 180, 100, 0.9) 100%);
+  border: 1.5px solid #c9a84c;
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem 0.55rem;
+  margin: 0.5rem 0.5rem 0;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.3) inset;
+  font-family: "IM Fell English", Georgia, serif;
+  color: #241b16;
+  flex-shrink: 0;
+}
+
+.desafio-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(36, 27, 22, 0.2);
+  padding-bottom: 0.35rem;
+}
+
+.desafio-numero {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #241b16;
+  color: #f4dc95;
+  padding: 1px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.desafio-titulo {
+  font-family: "Cinzel Decorative", "Cinzel", serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #5a3a10;
+  letter-spacing: 0.02em;
+}
+
+.desafio-enunciado {
+  margin: 0 0 0.3rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #2a1c10;
+}
+
+.desafio-dica {
+  margin: 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: #5a3a10;
+  opacity: 0.85;
+}
+
+/* ── Painel lateral ── */
+.rpg-painel-lateral {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  background: linear-gradient(180deg, #110904 0%, #0a0402 100%);
+  border-left: 1px solid rgba(139, 69, 19, 0.5);
+  overflow-y: auto;
+}
+
+/* ── Estado do sigilo ── */
+.estado-sigilo {
+  background: rgba(26, 15, 5, 0.9);
+  border: 1px solid rgba(139, 69, 19, 0.5);
+  border-radius: 8px;
+  padding: 0.65rem;
+}
+
+.estado-status {
+  font-family: var(--fonte-display);
+  font-size: 0.72rem;
+  color: rgba(201, 168, 76, 0.7);
+  text-align: center;
+  margin-bottom: 0.45rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+  letter-spacing: 0.05em;
+}
+
+/* As classes são adicionadas pelo spellSummaryView.js */
+.estado-status.active  { color: var(--cor-esmeralda); }
+.estado-status.invalid { color: var(--cor-rubi); }
+.estado-status.prepared { color: var(--cor-dourado-brilho); }
+.estado-status.closed  { color: var(--cor-dourado); }
+
+.estado-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: rgba(212, 196, 161, 0.7);
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+
+.estado-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--cor-sepia);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.1rem;
+}
+
+.medidores { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.medidor-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  color: rgba(212, 196, 161, 0.6);
+}
+
+.medidor-linha span:first-child {
+  width: 62px;
+  flex-shrink: 0;
+}
+
+/* Compatibilidade: o código usa classes .meter e .medidor */
+.medidor-linha .meter,
+.medidor-linha .medidor {
+  flex: 1;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  overflow: hidden;
+}
+
+.medidor-linha .meter > span,
+.medidor-linha .medidor > span {
+  display: block;
+  height: 100%;
+  background: var(--cor-dourado);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* data-level é definido por spellSummaryView.js */
+.medidor-linha .meter > span[data-level="low"],
+.medidor-linha .medidor > span[data-level="low"] { background: var(--cor-rubi); }
+.medidor-linha .meter > span[data-level="medium"],
+.medidor-linha .medidor > span[data-level="medium"] { background: var(--cor-dourado); }
+.medidor-linha .meter > span[data-level="high"],
+.medidor-linha .medidor > span[data-level="high"] { background: var(--cor-esmeralda); }
+
+/* ── Superfície 3D ── */
+.superficie-painel {
+  background: rgba(10, 4, 2, 0.95);
+  border: 1px solid rgba(139, 69, 19, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem;
+  animation: revelar-painel 0.5s ease;
+}
+
+@keyframes revelar-painel {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.superficie-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.68rem;
+  color: var(--cor-dourado);
+  text-align: center;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.1em;
+}
+
+.superficie-3d {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #050203;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.superficie-3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Painel de info matemática ── */
+.math-info-panel {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.math-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.math-label {
+  font-size: 0.62rem;
+  color: var(--cor-sepia);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.math-info-item code {
+  font-family: var(--fonte-codigo);
+  font-size: 0.78rem;
+  color: var(--cor-esmeralda);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.15rem 0.35rem;
+  border-radius: 3px;
+  word-break: break-word;
+  border-left: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+/* ── Seções pedagógicas do painel matemático ── */
+.math-section {
+  padding: 0.45rem 0.5rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--cor-sepia);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.math-section-funcao    { border-left-color: var(--cor-dourado-brilho); }
+.math-section-derivadas { border-left-color: #a78bfa; }
+.math-section-gradiente { border-left-color: var(--cor-esmeralda); }
+.math-section-hessiana  { border-left-color: #fb923c; }
+.math-section-criticos  { border-left-color: var(--cor-rubi, #ff3366); }
+
+.math-section-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  color: var(--cor-dourado-brilho);
+  text-transform: uppercase;
+}
+
+.math-section-conceito {
+  font-family: var(--fonte-corpo);
+  font-size: 0.70rem;
+  color: rgba(212, 196, 161, 0.75);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.math-section-desc {
+  font-family: var(--fonte-corpo);
+  font-size: 0.70rem;
+  color: rgba(212, 196, 161, 0.9);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.math-formula {
+  font-family: var(--fonte-codigo);
+  font-size: 0.78rem;
+  color: var(--cor-esmeralda);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  word-break: break-word;
+  border-left: 2px solid rgba(0, 255, 136, 0.3);
+  display: block;
+}
+
+.math-formula.math-destaque {
+  color: #fb923c;
+  border-left-color: rgba(251, 146, 60, 0.5);
+  font-weight: bold;
+}
+
+.math-regra {
+  font-family: var(--fonte-codigo);
+  font-size: 0.60rem;
+  color: rgba(212, 196, 161, 0.6);
+  margin: 0;
+  padding: 0.2rem 0.35rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  line-height: 1.6;
+}
+
+.math-pontos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.math-ponto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(139, 69, 19, 0.25);
+}
+
+.math-ponto-min    { border-color: rgba(0, 255, 136, 0.3); }
+.math-ponto-max    { border-color: rgba(255, 51, 102, 0.3); }
+.math-ponto-saddle { border-color: rgba(255, 215, 0, 0.3); }
+
+.math-ponto-coord {
+  font-family: var(--fonte-codigo);
+  font-size: 0.72rem;
+  color: rgba(212, 196, 161, 0.8);
+}
+
+.math-ponto-tipo {
+  font-family: var(--fonte-display);
+  font-size: 0.60rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.math-ponto-min .math-ponto-tipo    { background: rgba(0, 255, 136, 0.15); color: var(--cor-esmeralda); }
+.math-ponto-max .math-ponto-tipo    { background: rgba(255, 51, 102, 0.15); color: var(--cor-rubi, #ff3366); }
+.math-ponto-saddle .math-ponto-tipo { background: rgba(255, 215, 0, 0.15); color: var(--cor-dourado-brilho); }
+.math-ponto-inconclusive .math-ponto-tipo { background: rgba(139, 69, 19, 0.2); color: var(--cor-sepia); }
+
+.math-ponto-explicacao {
+  font-family: var(--fonte-corpo);
+  font-size: 0.68rem;
+  color: rgba(212, 196, 161, 0.85);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Dicionário colapsável ── */
+.dicionario-painel {
+  background: rgba(17, 9, 4, 0.85);
+  border: 1px solid rgba(139, 69, 19, 0.35);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.dicionario-painel summary {
+  font-family: var(--fonte-corpo);
+  font-size: 0.82rem;
+  color: var(--cor-dourado);
+  cursor: pointer;
+  padding: 0.2rem 0;
+  user-select: none;
+  list-style: none;
+}
+
+.dicionario-painel summary::-webkit-details-marker { display: none; }
+
+.dicionario-painel .panel-tabs {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0.4rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+  padding-bottom: 0.3rem;
+}
+
+.dicionario-painel .panel-tab-button,
+.dicionario-painel .dictionary-tab-button,
+.dicionario-painel .diagnostic-tab-button {
+  font-family: var(--fonte-corpo);
+  font-size: 0.7rem;
+  background: transparent;
+  border: 1px solid rgba(139, 69, 19, 0.4);
+  color: rgba(212, 196, 161, 0.6);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dicionario-painel .panel-tab-button.active,
+.dicionario-painel .dictionary-tab-button.active,
+.dicionario-painel .diagnostic-tab-button.active {
+  background: rgba(201, 168, 76, 0.15);
+  border-color: var(--cor-dourado);
+  color: var(--cor-dourado);
+}
+
+.dicionario-painel .reference-list,
+.dicionario-painel .reference-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.3rem 0;
+}
+
+.dicionario-painel .panel-description {
+  font-size: 0.72rem;
+  color: rgba(212, 196, 161, 0.5);
+  font-style: italic;
+  margin-bottom: 0.3rem;
+  width: 100%;
+}
+
+.dicionario-painel .diagnostic-output {
+  font-family: var(--fonte-codigo);
+  font-size: 0.65rem;
+  color: rgba(0, 255, 136, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: 4px;
+  max-height: 180px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.dicionario-painel .diagnostic-viewer-shell {
+  position: relative;
+}
+
+.dicionario-painel .diagnostic-copy-button {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  font-size: 0.65rem;
+  background: rgba(201, 168, 76, 0.2);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--cor-dourado);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* ================================================================
+   CAIXA DE DIÁLOGO RPG
+   ================================================================ */
+
+.dialogo-rpg {
+  position: relative;
+  flex-shrink: 0;
+  height: 178px;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 8, 2, 0.97) 0%,
+    rgba(10, 4, 1, 0.99) 100%
+  );
+  border-top: 2px solid var(--cor-dourado);
+  display: flex;
+  align-items: stretch;
+  z-index: 100;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Linha decorativa dourada no topo */
+.dialogo-rpg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--cor-dourado) 15%,
+    var(--cor-dourado-brilho) 50%,
+    var(--cor-dourado) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.dialogo-rpg[hidden] { display: none; }
+
+/* ── Retrato do personagem ── */
+.dialogo-retrato-wrapper {
+  position: relative;
+  width: 120px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.dialogo-retrato {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 104px;
+  height: 148px;
+  filter:
+    drop-shadow(0 -6px 20px rgba(201, 168, 76, 0.35))
+    drop-shadow(0 0 8px rgba(0, 255, 136, 0.1));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.dialogo-retrato svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Animação de "fala" — leve bounce no portrait */
+.dialogo-retrato.falando {
+  animation: portrait-fala 0.6s ease infinite alternate;
+}
+
+@keyframes portrait-fala {
+  from { transform: translateX(-50%) translateY(0px); }
+  to   { transform: translateX(-50%) translateY(-3px); }
+}
+
+/* ── Corpo do diálogo ── */
+.dialogo-corpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.8rem 1.2rem 0.8rem 0.4rem;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.dialogo-nome {
+  font-family: var(--fonte-display);
+  font-size: 0.85rem;
+  color: var(--cor-dourado-brilho);
+  letter-spacing: 0.1em;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.dialogo-texto {
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  color: var(--cor-pergaminho);
+  line-height: 1.55;
+  flex: 1;
+  min-height: 3.5em;
+  letter-spacing: 0.015em;
+}
+
+.dialogo-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.dialogo-progresso {
+  font-size: 0.68rem;
+  color: rgba(139, 69, 19, 0.7);
+  font-family: var(--fonte-corpo);
+  font-style: italic;
+}
+
+.dialogo-avancar {
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  color: var(--cor-tinta);
+  background: var(--cor-dourado);
+  border: none;
+  padding: 0.28rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: pulso-avancar 1.8s ease-in-out infinite;
+}
+
+.dialogo-avancar:hover {
+  background: var(--cor-dourado-brilho);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+@keyframes pulso-avancar {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+
+/* ================================================================
+   RESPONSIVIDADE
+   ================================================================ */
+
+@media (max-width: 900px) {
+  .rpg-painel-lateral { width: 260px; }
+  .dialogo-retrato-wrapper { width: 90px; }
+  .dialogo-retrato { width: 80px; height: 115px; }
+  .dialogo-texto { font-size: 0.9rem; }
+}
+
+@media (max-width: 640px) {
+  .rpg-painel-lateral { display: none; }
+  .hud-ano { display: none; }
+  .dialogo-rpg { height: auto; min-height: 150px; }
+}

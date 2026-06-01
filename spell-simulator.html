@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Atelier do Gradiente</title>
+    <link rel="icon" href="./assets/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./src/ui/styles.css">
+  </head>
+  <body class="rpg-corpo">
+    <div class="rpg-shell">
+
+      <!-- ═══════════════════════════════════════════════════════
+           HUD SUPERIOR
+           ═══════════════════════════════════════════════════════ -->
+      <header class="rpg-hud">
+        <div class="hud-esquerda">
+          <a href="./index.html" class="hud-voltar">← Atelier</a>
+          <span class="hud-ano" id="hudAno">Ano I — O Caderno de Sigilos</span>
+        </div>
+        <div class="hud-centro">
+          <span class="hud-titulo">Atelier do Gradiente</span>
+        </div>
+        <div class="hud-direita">
+          <label class="hud-toggle">
+            <input type="checkbox" id="guidesToggle" checked>
+            <span>Guias</span>
+          </label>
+          <!-- diagnosticsToggle é necessário internamente; ocultado da UI RPG -->
+          <label class="rpg-oculto">
+            <input type="checkbox" id="diagnosticsToggle">
+          </label>
+          <button type="button" class="hud-btn" id="undoButton">↩ Desfazer</button>
+          <button type="button" class="hud-btn hud-btn-perigo" id="clearButton">✕ Limpar</button>
+        </div>
+      </header>
+
+      <!-- ═══════════════════════════════════════════════════════
+           ÁREA PRINCIPAL: Canvas + Painel Lateral
+           ═══════════════════════════════════════════════════════ -->
+      <main class="rpg-main">
+
+        <!-- Canvas de desenho de sigilos -->
+        <section class="rpg-canvas-area" aria-label="Caderno de sigilos">
+        <!-- Painel de desafio: problema matemático atual proposto por Nabla -->
+          <div class="desafio-panel" id="desafioPanel" hidden>
+            <!-- preenchido pelo PuzzleManager via JS -->
+          </div>
+
+          <p class="canvas-hint" id="canvasHint">
+            Trace o anel delimitador e desenhe um sigilo no centro.<br>
+            Feche o círculo para despertar o feitiço.
+          </p>
+          <div class="canvas-shell">
+            <canvas id="glyphCanvas" width="1200" height="800"></canvas>
+            <canvas id="effectCanvas" width="1200" height="800"></canvas>
+          </div>
+        </section>
+
+        <!-- Painel lateral: estado + superfície 3D + dicionário -->
+        <aside class="rpg-painel-lateral" aria-label="Painel mágico">
+
+          <!-- Estado do sigilo -->
+          <div class="estado-sigilo">
+            <div class="spell-state-status estado-status" id="statusValue">Aguardando...</div>
+            <div class="estado-info">
+              <div>
+                <span class="estado-label">Elemento</span>
+                <strong id="elementValue">—</strong>
+              </div>
+              <div>
+                <span class="estado-label">Manifestações</span>
+                <strong id="manifestationValue">—</strong>
+              </div>
+            </div>
+            <div class="medidores">
+              <div class="medidor-linha">
+                <span>Qualidade</span>
+                <div class="meter medidor"><span id="qualityMeter"></span></div>
+                <span class="diagnostic-meter-value" id="qualityMeterValue">0%</span>
+              </div>
+              <div class="medidor-linha">
+                <span>Estabilidade</span>
+                <div class="meter medidor"><span id="stabilityMeter"></span></div>
+                <span class="diagnostic-meter-value" id="stabilityMeterValue">0%</span>
+              </div>
+              <div class="medidor-linha">
+                <span>Força</span>
+                <div class="meter medidor"><span id="forceMeter"></span></div>
+                <span class="diagnostic-meter-value" id="forceMeterValue">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Superfície 3D — revelada quando um sigilo é reconhecido -->
+          <div class="superficie-painel" id="superficiePanel" hidden>
+            <h3 class="superficie-titulo">✦ Superfície Mágica ✦</h3>
+            <div class="superficie-3d" id="container3d"></div>
+            <div class="math-info-panel" id="mathInfoPanel"></div>
+          </div>
+
+          <!-- Dicionário de Sigilos (colapsável) -->
+          <details class="dicionario-painel">
+            <summary>📖 Dicionário de Sigilos</summary>
+            <div class="panel-tabs">
+              <button type="button" class="panel-tab-button active" data-panel-root="dictionaryRootPanel">Sigilos</button>
+              <button type="button" class="panel-tab-button" data-panel-root="diagnosticRootPanel">Diagnóstico</button>
+            </div>
+
+            <section id="dictionaryRootPanel">
+              <div class="reference-tabs">
+                <button type="button" class="dictionary-tab-button active" data-dictionary-panel="sampleSpellReferencePanel">Exemplos</button>
+                <button type="button" class="dictionary-tab-button" data-dictionary-panel="sigilReferencePanel">Sigilos</button>
+                <button type="button" class="dictionary-tab-button" data-dictionary-panel="signReferencePanel">Signos</button>
+              </div>
+              <div id="sampleSpellReferencePanel" class="reference-list">
+                <p class="panel-description">Layouts de referência para guiar seu traçado.</p>
+                <div id="sampleSpellReferenceCards"></div>
+              </div>
+              <div id="sigilReferencePanel" class="reference-list" hidden>
+                <p class="panel-description">Sigilos primários — cada um representa uma função f(x,y).</p>
+                <div id="sigilReferenceCards"></div>
+              </div>
+              <div id="signReferencePanel" class="reference-list" hidden>
+                <p class="panel-description">Signos modificadores — operações matemáticas sobre o gradiente.</p>
+                <div id="signReferenceCards"></div>
+              </div>
+            </section>
+
+            <section id="diagnosticRootPanel" hidden>
+              <div class="diagnostics-tabs">
+                <button type="button" class="diagnostic-tab-button active" data-diagnostic-panel="parserPanel">Parser</button>
+                <button type="button" class="diagnostic-tab-button" data-diagnostic-panel="astPanel">AST</button>
+                <button type="button" class="diagnostic-tab-button" data-diagnostic-panel="irPanel">IR</button>
+              </div>
+              <div class="diagnostic-panel-shell" id="parserPanelShell">
+                <div class="diagnostic-viewer-shell">
+                  <button type="button" class="diagnostic-copy-button" data-copy-panel="parserPanel">Copiar</button>
+                  <pre id="parserPanel" class="diagnostic-output"></pre>
+                </div>
+              </div>
+              <div class="diagnostic-panel-shell" id="astPanelShell" hidden>
+                <div class="diagnostic-viewer-shell">
+                  <button type="button" class="diagnostic-copy-button" data-copy-panel="astPanel">Copiar</button>
+                  <pre id="astPanel" class="diagnostic-output"></pre>
+                </div>
+              </div>
+              <div class="diagnostic-panel-shell" id="irPanelShell" hidden>
+                <div class="diagnostic-viewer-shell">
+                  <button type="button" class="diagnostic-copy-button" data-copy-panel="irPanel">Copiar</button>
+                  <pre id="irPanel" class="diagnostic-output"></pre>
+                </div>
+              </div>
+            </section>
+          </details>
+
+        </aside>
+      </main>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CAIXA DE DIÁLOGO RPG (fixa na base da tela)
+           ═══════════════════════════════════════════════════════ -->
+      <div class="dialogo-rpg" id="dialogoRpg" hidden aria-live="polite">
+        <div class="dialogo-retrato-wrapper">
+          <div class="dialogo-retrato" id="retratoPersonagem"></div>
+        </div>
+        <div class="dialogo-corpo">
+          <div class="dialogo-nome" id="nomePersonagem">Mestra Nabla</div>
+          <div class="dialogo-texto" id="textoDialogo"></div>
+          <div class="dialogo-rodape">
+            <span class="dialogo-progresso" id="dialogoProgresso"></span>
+            <button class="dialogo-avancar" id="avancarDialogo" aria-label="Próxima fala">▶ Continuar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

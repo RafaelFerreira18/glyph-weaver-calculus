@@ -1,13 +1,19 @@
 {
-  "name": "witch-hat-atelier-spell-simulator",
+  "name": "glyph-weaver-calculus",
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "description": "Serious game educacional de Cálculo Multivariável inspirado em Witch Hat Atelier",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173",
     "start": "npm run dev",
     "build": "vite build",
-    "test": "node --test tests"
+    "test": "node --test tests/math.test.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "mathjs": "^13.0.0",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "vite": "^6.4.0"

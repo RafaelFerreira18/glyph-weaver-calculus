@@ -1,86 +1,112 @@
-# Witch Hat Atelier Spell Simulator
+# 🧙‍♂️ Glyph Weaver: Atelier do Gradiente
 
-A fan-made browser-based spell drawing simulator inspired by *[Witch Hat Atelier](https://en.wikipedia.org/wiki/Witch_Hat_Atelier)*.
+> *Serious game* educacional de **Cálculo Multivariável** inspirado no mangá
+> *Witch Hat Atelier* (とんがり帽子のアトリエ).
 
 <div align="center">
-  <img src="./assets/demo.gif" width="720"/>
-  <p>Try here: <a href="https://ytnrvdf.github.io/wha-spell-simulator">https://ytnrvdf.github.io/wha-spell-simulator</a></p>
+  <!-- Substitua por uma captura de tela do projeto -->
+  <img src="./assets/demo.gif" width="720" alt="Screenshot do Glyph Weaver"/>
 </div>
 
-## Fan Project Notice
+## 📖 Sobre
 
-This is an unofficial fan-made project for learning, experimentation, and appreciation. It is not affiliated with, endorsed by, or sponsored by the official creators, publishers, licensors, or production partners of *Witch Hat Atelier*.
+Glyph Weaver transforma conceitos de Cálculo Multivariável em mecânicas de
+magia: sigilos elementais representam funções de duas variáveis, o gradiente
+indica a direção de maior potência, a Hessiana revela a natureza do terreno
+mágico, e pontos críticos são nexos de poder a serem descobertos.
 
-*Witch Hat Atelier* and related names, artwork, symbols, and trademarks belong to their respective rights holders. The sigils, signs, spell terminology, and visual effects in this project are partial fan references and interactive interpretations, not official assets or canonical rules.
+O projeto é um fork educacional do
+[wha-spell-simulator](https://github.com/ytnrvdf/wha-spell-simulator),
+estendido com módulos de matemática simbólica e visualização 3D.
 
-## What It Does
+## 🚀 Como Executar
 
-The app turns a freehand spell diagram into parser output, compiled spell behavior, and animated canvas effects.
-
-- Lets you draw spell diagrams on a paper-like canvas.
-- Detects one enclosing ring and distinguishes prepared versus active spells.
-- Recognizes dictionary-backed primary sigils for fire, water, wind, earth, and light.
-- Recognizes signs that modify direction, levitation, convergence, force, spread, focus, range, duration, and stability.
-- Produces parser diagnostics, `GlyphAST`, and `SpellIR` output for inspection.
-- Renders animated element effects from the compiled spell behavior.
-- Shows sample spell layouts in the Dictionary panel as drawing references.
-- Includes reference tools for making, viewing, and testing stroke templates, plus a spell effect lab for visual and animation tuning.
-
-## Current Limitations
-
-- The app supports one enclosing spell ring at a time. Multiple rings are detected as unsupported.
-- The current compiler expects one primary sigil. Multiple primary sigils are detected as unsupported.
-- Recognition is based on local stroke templates, so it works best with clean, deliberate drawings.
-- The recognizer is not perfect. Some valid-looking drawings may fail to match, and some rough drawings may need to be redrawn more clearly.
-- The dictionaries only cover a small fan-made subset of sigils, signs, and observed spell ideas.
-- The visual effects are interpretive canvas animations, not a faithful reproduction of manga or anime effects.
-- Raster images can be used as visual references, but the app cannot recover true stroke order from an image.
-- Closed but invalid diagrams may show diagnostics, but they do not fall back to another element.
-- This is a browser prototype, not a production drawing engine or general symbol recognizer.
-
-## Run Locally
-
-Install dependencies:
-
-```sh
+```bash
+git clone https://github.com/RafaelFerreira18/glyph-weaver-calculus.git
+cd glyph-weaver-calculus
 npm install
+npm run dev
 ```
 
-Start the Vite dev server:
+Acesse:
+- **Página inicial**: http://127.0.0.1:5173/
+- **Laboratório Matemático**: http://127.0.0.1:5173/math-demo.html
+- **Simulador de Sigilos**: http://127.0.0.1:5173/spell-simulator.html
 
-```sh
-npm start
+## 🗂️ Estrutura do Projeto
+
+```
+glyph-weaver-calculus/
+├── src/
+│   ├── math/               # Núcleo matemático (gradiente, hessiana, pontos críticos)
+│   ├── parser/              # Reconhecimento de glifos (herdado do spell-simulator)
+│   ├── render/              # Visualização 3D (Three.js)
+│   ├── game/                # Mecânicas de jogo e progressão
+│   └── ui/                  # Interface e estilos
+├── tests/                   # Testes unitários (node:test)
+├── tools/                   # Ferramentas de referência (labs)
+├── docs/                    # Documentação
+├── index.html               # Página principal
+├── math-demo.html           # Laboratório matemático
+└── spell-simulator.html     # Simulador de sigilos original
 ```
 
-Then open:
+## 🧪 Testes
 
-```txt
-http://127.0.0.1:5173/
-```
-
-## Reference Tools
-
-These tools are available from the app:
-
-```txt
-/tools/strokeTemplateMaker.html
-/tools/strokeTemplateViewer.html
-/tools/sigilSignDetectorLab.html
-/tools/spellEffectLab.html
-```
-
-## Tests
-
-Run the Node test suite:
-
-```sh
+```bash
 npm test
 ```
 
-## Documentation
+## 🛠️ Stack Tecnológica
 
-- [Dictionary authoring](docs/dictionary-authoring.md)
-- [Parser and spell semantics rules](docs/play-rules.md)
-- [Parsed glyph output contract](docs/glyph-ast.md)
-- [Compiled spell output contract](docs/spell-ir.md)
-- [Visual effect renderer notes](docs/effect-rendering.md)
+| Tecnologia | Uso |
+|-----------|-----|
+| **Vite** | Bundler e dev server |
+| **Three.js** | Visualização 3D das superfícies |
+| **Math.js** | Parsing simbólico, derivação e álgebra computacional |
+| **Node.js test runner** | Testes unitários |
+
+## 📐 Conceitos Matemáticos
+
+O jogo cobre os seguintes tópicos, organizados em 4 "Anos letivos":
+
+| Ano | Tema | Mecânica no Jogo |
+|-----|------|-------------------|
+| I | Funções de várias variáveis | Sigilos elementais geram superfícies |
+| II | Derivadas parciais | Força direcional dos sigilos |
+| III | Vetor gradiente | Bússola mágica — direção de maior potência |
+| IV | Pontos críticos e Hessiana | Nexos de poder — classificação do terreno |
+
+### Sigilos Elementais
+
+| Sigilo | Função | Superfície |
+|--------|--------|-----------|
+| 🔥 Fogo | x² + y² | Paraboloide elíptico |
+| 💨 Vento | sin(x) + cos(y) | Ondulatória |
+| 💧 Água | e^(-(x²+y²)) | Gaussiana |
+| 🌍 Terra | x² - y² | Sela hiperbólica |
+| ✨ Luz | ln(x²+y²+1) | Logarítmica |
+
+## 📚 Documentação
+
+- [Manual do Desenvolvedor](docs/manual.md)
+- [Conceitos Matemáticos](docs/conceitos-matematicos.md)
+- [Autoria de dicionários](docs/dictionary-authoring.md)
+- [Regras do parser e semântica](docs/play-rules.md)
+- [Contrato do GlyphAST](docs/glyph-ast.md)
+- [Contrato do SpellIR](docs/spell-ir.md)
+- [Notas de renderização](docs/effect-rendering.md)
+
+## 🙏 Créditos e Agradecimentos
+
+- **Witch Hat Atelier** (とんがり帽子のアトリエ) por Kamome Shirahama — inspiração
+  artística e temática. Este é um projeto não oficial de fã, sem afiliação com
+  os criadores, editoras ou licenciadores oficiais.
+- [wha-spell-simulator](https://github.com/ytnrvdf/wha-spell-simulator) —
+  projeto original de simulação de sigilos, do qual este repositório é derivado.
+- **Math.js** — biblioteca de matemática simbólica e numérica.
+- **Three.js** — motor de renderização 3D.
+
+## 📄 Licença
+
+Este projeto é distribuído sob a licença [MIT](LICENSE).
