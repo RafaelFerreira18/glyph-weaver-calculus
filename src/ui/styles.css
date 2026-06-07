@@ -1109,3 +1109,769 @@ footer {
   .hud-ano { display: none; }
   .dialogo-rpg { height: auto; min-height: 150px; }
 }
+
+/* ================================================================
+   LAYOUT: restaurar layout fixo (labs agora são modais)
+   ================================================================ */
+
+/* Reverte os overrides de scroll que foram adicionados para os labs inline.
+   Os valores aqui repetem os do bloco original mais acima — são apenas
+   confirmação explícita para garantir que nenhuma herança os sobrescreva. */
+.rpg-corpo  { overflow: hidden !important; height: 100dvh !important; }
+.rpg-shell  { height: 100dvh !important;  overflow: hidden !important; }
+.rpg-main   { flex: 1; display: flex; overflow: hidden; min-height: 0; height: auto !important; flex-shrink: unset !important; }
+
+/* ================================================================
+   BOTÕES HUD — novos (Olhos, Caderno, Demo)
+   ================================================================ */
+
+.hud-btn-olhos  { border-color: rgba(0,255,136,.4); color: rgba(0,255,136,.7); }
+.hud-btn-caderno{ border-color: rgba(201,168, 76,.4); color: rgba(201,168, 76,.7); }
+.hud-btn-demo   { border-color: rgba(255, 51,102,.4); color: rgba(255, 51,102,.7); }
+
+.hud-btn-olhos:hover   { border-color: var(--cor-esmeralda);  color: var(--cor-esmeralda);  }
+.hud-btn-caderno:hover { border-color: var(--cor-dourado);    color: var(--cor-dourado);    }
+.hud-btn-demo:hover    { border-color: var(--cor-rubi);       color: var(--cor-rubi);       }
+
+/* ================================================================
+   BIBLIOTECA DE GLIFOS
+   ================================================================ */
+
+.biblioteca-painel {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid rgba(201,168,76,.3);
+}
+
+.biblioteca-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.72rem;
+  color: var(--cor-dourado);
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.1em;
+}
+
+.biblioteca-desc {
+  font-size: 0.72rem;
+  color: rgba(212,196,161,.5);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.biblioteca-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.glifo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,168,76,.3);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: rgba(212,196,161,.7);
+  font-family: var(--fonte-corpo);
+  flex: 1 1 calc(33% - 0.4rem);
+  min-width: 0;
+}
+
+.glifo-btn:hover {
+  border-color: var(--cor-dourado);
+  background: rgba(201,168,76,.1);
+  color: var(--cor-dourado);
+}
+
+.glifo-btn.ativo {
+  border-color: var(--cor-esmeralda);
+  background: rgba(0,255,136,.08);
+  color: var(--cor-esmeralda);
+  box-shadow: 0 0 8px rgba(0,255,136,.2);
+}
+
+.glifo-emoji  { font-size: 1.4rem; }
+.glifo-nome   { font-size: 0.62rem; text-transform: uppercase; letter-spacing: .06em; }
+.glifo-formula{ font-size: 0.58rem; font-family: var(--fonte-codigo); opacity: .7; }
+
+/* ================================================================
+   LABS EDUCACIONAIS — overlays modais
+   ================================================================ */
+
+.lab-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,1,0,.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+
+.lab-overlay[hidden] { display: none; }
+
+.lab-painel {
+  background: linear-gradient(135deg, #1a0f05 0%, #0d0703 100%);
+  border: 1.5px solid rgba(201,168,76,.5);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  width: min(780px, 96vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.85);
+  color: rgba(212,196,161,.9);
+}
+
+.lab-painel-gradiente {
+  width: min(700px, 96vw);
+}
+
+.lab-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+
+.lab-header-info { flex: 1; min-width: 0; }
+
+.lab-fechar {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,.4);
+  color: rgba(201,168,76,.7);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.lab-fechar:hover { background: rgba(201,168,76,.12); color: var(--cor-dourado); }
+
+.lab-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.95rem;
+  color: var(--cor-dourado);
+  margin-bottom: 0.2rem;
+}
+
+.lab-funcao {
+  font-family: var(--fonte-codigo);
+  font-size: 0.82rem;
+  color: var(--cor-esmeralda);
+  display: block;
+}
+
+.lab-obj-linha {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.8rem;
+}
+
+.lab-obj-label {
+  font-family: var(--fonte-display);
+  font-size: 0.62rem;
+  color: var(--cor-dourado);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.lab-corpo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.lab-corpo-gradiente,
+.lab-corpo-classificar {
+  grid-template-columns: auto 1fr;
+}
+
+.lab-grafico figcaption {
+  font-size: 0.75rem;
+  color: rgba(212,196,161,.55);
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+
+.lab-canvas {
+  display: block;
+  border: 1px solid rgba(201,168,76,.2);
+  border-radius: 6px;
+  background: #040201;
+  max-width: 100%;
+}
+
+.lab-canvas-grande { width: 320px; height: 320px; }
+
+.lab-resultado {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.lab-resultado.certo  { background: rgba(0,255,136,.08); border: 1px solid rgba(0,255,136,.3); color: var(--cor-esmeralda); }
+.lab-resultado.errado { background: rgba(255,51,102,.08); border: 1px solid rgba(255,51,102,.3); color: var(--cor-rubi); }
+
+.lab-controles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.lab-controle-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.lab-slider {
+  flex: 1;
+  accent-color: var(--cor-dourado);
+  cursor: pointer;
+}
+
+.lab-pergunta-area { margin-top: 0.6rem; }
+
+.lab-pergunta-texto {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: rgba(212,196,161,.8);
+  margin-bottom: 0.5rem;
+}
+
+.lab-botoes-resposta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.lab-btn-resp {
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid rgba(201,168,76,.4);
+  background: transparent;
+  color: rgba(212,196,161,.8);
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  font-size: 0.82rem;
+  transition: all 0.2s;
+}
+
+.lab-btn-sobe:hover   { border-color: var(--cor-esmeralda); color: var(--cor-esmeralda); }
+.lab-btn-desce:hover  { border-color: var(--cor-rubi);      color: var(--cor-rubi);      }
+.lab-btn-igual:hover  { border-color: var(--cor-dourado);   color: var(--cor-dourado);   }
+
+.lab-btn-verificar {
+  margin-top: 0.8rem;
+  padding: 0.4rem 1rem;
+}
+
+/* Gradiente lab */
+.gradiente-info {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.gradiente-legenda {
+  list-style: none;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: rgba(212,196,161,.55);
+}
+
+.leg-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+}
+
+.leg-verde  { background: #00ff88; }
+.leg-rubi   { background: #ff3366; }
+.leg-dourado{ background: #c9a84c; }
+
+/* Classificar lab */
+.classificar-pontos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.classificar-ponto-btn {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(201,168,76,.4);
+  background: rgba(255,255,255,.03);
+  color: rgba(212,196,161,.8);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--fonte-codigo);
+  font-size: 0.78rem;
+  transition: all 0.2s;
+}
+
+.classificar-ponto-btn:hover {
+  border-color: var(--cor-dourado);
+  color: var(--cor-dourado);
+}
+
+.classificar-ponto-btn.selecionado {
+  border-color: var(--cor-esmeralda);
+  color: var(--cor-esmeralda);
+  background: rgba(0,255,136,.07);
+}
+
+.classificar-ponto-btn.respondido { opacity: 0.45; cursor: default; }
+
+.classificar-btn {
+  padding: 0.4rem 1rem;
+}
+
+.classificar-hessiana {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(201,168,76,.2);
+  border-radius: 8px;
+  background: rgba(255,255,255,.02);
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: rgba(212,196,161,.7);
+}
+
+/* ── Atalhos de labs no aside ── */
+.labs-atalhos {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(201,168,76,.2);
+}
+
+.labs-atalhos-label {
+  font-size: 0.62rem;
+  color: rgba(212,196,161,.4);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lab-atalho-btn {
+  padding: 0.22rem 0.55rem;
+  border: 1px solid rgba(201,168,76,.35);
+  background: transparent;
+  color: rgba(212,196,161,.65);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  font-size: 0.72rem;
+  transition: all 0.2s;
+}
+
+.lab-atalho-btn:hover {
+  border-color: var(--cor-dourado);
+  color: var(--cor-dourado);
+  background: rgba(201,168,76,.07);
+}
+
+/* ================================================================
+   OVERLAY — OLHOS ARCANOS
+   ================================================================ */
+
+.olhos-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,1,0,.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+}
+
+.olhos-overlay[hidden] { display: none; }
+
+.olhos-painel {
+  background: linear-gradient(135deg, #1a0f05 0%, #0d0703 100%);
+  border: 1.5px solid var(--cor-dourado);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 660px;
+  width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+}
+
+.olhos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.olhos-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.9rem;
+  color: var(--cor-dourado);
+}
+
+.olhos-fechar {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,.4);
+  color: var(--cor-dourado);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.olhos-fechar:hover { background: rgba(201,168,76,.15); }
+
+.olhos-sub {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(212,196,161,.5);
+  margin-bottom: 0.8rem;
+}
+
+.olhos-sigilos {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.olhos-sigilo {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(201,168,76,.3);
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(212,196,161,.7);
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  transition: all 0.2s;
+}
+
+.olhos-sigilo:hover { border-color: var(--cor-dourado); color: var(--cor-dourado); }
+.olhos-sigilo.ativo {
+  border-color: var(--cor-esmeralda);
+  color: var(--cor-esmeralda);
+  background: rgba(0,255,136,.07);
+}
+
+.olhos-corpo {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.olhos-mapa {
+  border: 1px solid rgba(201,168,76,.2);
+  border-radius: 8px;
+  background: #040201;
+  flex-shrink: 0;
+}
+
+.olhos-formula {
+  flex: 1;
+  font-size: 0.8rem;
+  color: rgba(212,196,161,.8);
+  line-height: 1.7;
+}
+
+.olhos-formula code {
+  display: block;
+  font-family: var(--fonte-codigo);
+  color: var(--cor-esmeralda);
+  margin: 0.3rem 0;
+}
+
+/* ================================================================
+   OVERLAY — CADERNO DO APRENDIZ
+   ================================================================ */
+
+.caderno-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,1,0,.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+}
+
+.caderno-overlay[hidden] { display: none; }
+
+.caderno-painel {
+  background: #f4e4c1;
+  border: 2px solid var(--cor-sepia);
+  border-radius: 10px;
+  width: min(700px, 95vw);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+  overflow: hidden;
+}
+
+.caderno-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--cor-sepia);
+  color: var(--cor-pergaminho);
+  padding: 0.65rem 1rem;
+  flex-shrink: 0;
+}
+
+.caderno-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.85rem;
+  color: var(--cor-pergaminho);
+  flex: 1;
+}
+
+.caderno-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.caderno-nav-btn {
+  background: transparent;
+  border: 1px solid rgba(244,228,193,.4);
+  color: var(--cor-pergaminho);
+  width: 26px; height: 26px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.caderno-nav-btn:hover { background: rgba(244,228,193,.15); }
+
+.caderno-fechar {
+  background: transparent;
+  border: 1px solid rgba(244,228,193,.4);
+  color: var(--cor-pergaminho);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.caderno-fechar:hover { background: rgba(244,228,193,.15); }
+
+.caderno-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 2px solid var(--cor-sepia);
+  background: rgba(139,69,19,.08);
+  flex-shrink: 0;
+}
+
+.caderno-tab {
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(139,69,19,.2);
+  color: var(--cor-sepia);
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  font-size: 0.72rem;
+  transition: all 0.2s;
+}
+
+.caderno-tab:hover { background: rgba(139,69,19,.12); }
+.caderno-tab.ativo {
+  background: var(--cor-pergaminho);
+  font-weight: bold;
+  border-bottom: 2px solid var(--cor-pergaminho);
+  margin-bottom: -2px;
+}
+
+.caderno-conteudo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.4rem 1.8rem;
+  color: var(--cor-tinta);
+  font-family: var(--fonte-corpo);
+  line-height: 1.75;
+}
+
+.caderno-titulo-pag {
+  font-family: var(--fonte-display);
+  font-size: 1.05rem;
+  color: var(--cor-sepia);
+  border-bottom: 1px solid rgba(139,69,19,.3);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.caderno-formula {
+  display: block;
+  font-family: var(--fonte-codigo);
+  font-size: 0.88rem;
+  background: rgba(139,69,19,.08);
+  border-left: 3px solid var(--cor-sepia);
+  padding: 0.4rem 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 0 4px 4px 0;
+  color: var(--cor-tinta);
+}
+
+.caderno-nota {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(44,24,16,.65);
+  border-left: 2px solid rgba(139,69,19,.3);
+  padding-left: 0.7rem;
+  margin: 0.5rem 0;
+}
+
+.caderno-tabela {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.6rem 0;
+  font-size: 0.82rem;
+}
+
+.caderno-tabela th {
+  background: rgba(139,69,19,.12);
+  border: 1px solid rgba(139,69,19,.25);
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  font-family: var(--fonte-display);
+  font-size: 0.65rem;
+  color: var(--cor-sepia);
+}
+
+.caderno-tabela td {
+  border: 1px solid rgba(139,69,19,.18);
+  padding: 0.3rem 0.6rem;
+}
+
+/* ================================================================
+   OVERLAY — MODO DEMO
+   ================================================================ */
+
+.demo-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,1,0,.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+}
+
+.demo-overlay[hidden] { display: none; }
+
+.demo-painel {
+  background: linear-gradient(135deg, #1a0f05 0%, #0d0703 100%);
+  border: 1.5px solid var(--cor-rubi);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 540px;
+  width: 92vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+}
+
+.demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.demo-titulo {
+  font-family: var(--fonte-display);
+  font-size: 0.88rem;
+  color: var(--cor-rubi);
+}
+
+.demo-fechar {
+  background: transparent;
+  border: 1px solid rgba(255,51,102,.4);
+  color: var(--cor-rubi);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.demo-fechar:hover { background: rgba(255,51,102,.15); }
+
+.demo-progresso {
+  font-size: 0.75rem;
+  color: rgba(212,196,161,.45);
+  letter-spacing: .08em;
+  margin-bottom: 0.6rem;
+}
+
+.demo-descricao {
+  font-family: var(--fonte-corpo);
+  font-size: 0.95rem;
+  color: rgba(212,196,161,.9);
+  line-height: 1.6;
+  margin-bottom: 0.7rem;
+}
+
+.demo-conceito {
+  font-family: var(--fonte-corpo);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(201,168,76,.8);
+  border-left: 2px solid rgba(201,168,76,.35);
+  padding-left: 0.75rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+}
+
+.demo-botoes {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+

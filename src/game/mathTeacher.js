@@ -19,7 +19,7 @@ import { MestraNabla } from './npcs/mestraNabla.js';
  * Dados pedagógicos pré-computados para cada sigilo primário.
  * Chave: elemento conforme retornado pelo SpellIR ('fire', 'water', etc.)
  */
-const SIGILOS = {
+export const SIGILOS = {
   fire: {
     nome: 'Fogo',
     emoji: '🔥',
@@ -199,6 +199,9 @@ export class MathTeacher {
     if (elemento === this.elementoAtual) return;
     this.elementoAtual = elemento;
 
+    // Notifica os labs e outros ouvintes sobre o sigilo reconhecido
+    document.dispatchEvent(new CustomEvent('sigilo:reconhecido', { detail: { elemento } }));
+
     const resultado = this.puzzleManager.validar(elemento);
 
     if (resultado === 'correto') {
@@ -313,9 +316,27 @@ export class MathTeacher {
    * Cada seção corresponde a um conceito do currículo de Cálculo Multivariável.
    * @param {object} sigilo
    */
-  _mostrarInfoMatematica(sigilo) {
+  async _mostrarInfoMatematica(sigilo) {
     const painel = document.getElementById('mathInfoPanel');
     if (!painel) return;
+
+    // ── 0. Domínio e Imagem (Ano I — Funções Multivariáveis) ──
+    let imagemHtml = '';
+    try {
+      const { parseFunction, evaluateAt } = await import('../math/multivarCalc.js');
+      const node = parseFunction(sigilo.expressao);
+      let fMin = Infinity, fMax = -Infinity;
+      const R = 4, STEP = 0.4;
+      for (let x = -R; x <= R; x += STEP) {
+        for (let y = -R; y <= R; y += STEP) {
+          const v = evaluateAt(node, x, y);
+          if (isFinite(v)) { fMin = Math.min(fMin, v); fMax = Math.max(fMax, v); }
+        }
+      }
+      if (isFinite(fMin)) {
+        imagemHtml = `<code class="math-formula">f(D) ≈ [${fMin.toFixed(2)}, ${fMax.toFixed(2)}]</code>`;
+      }
+    } catch (_) { /* silêncio — não bloquear o restante */ }
 
     // ── 1. Pontos críticos com classificação explicada ──
     const pontosHtml = sigilo.pontosCriticos.map((p) => {
@@ -332,6 +353,10 @@ export class MathTeacher {
         <div class="math-section-titulo">📐 A Função</div>
         <code class="math-formula">${sigilo.funcao}</code>
         <p class="math-section-desc">Superfície: <strong>${sigilo.tipo}</strong></p>
+        <p class="math-section-conceito">
+          <strong>Domínio:</strong> ℝ² (todo o plano) &nbsp;|&nbsp;
+          <strong>Imagem:</strong> ${imagemHtml || '—'}
+        </p>
       </div>
 
       <div class="math-section math-section-derivadas">
@@ -371,4 +396,3 @@ export class MathTeacher {
     `;
   }
 }
-
