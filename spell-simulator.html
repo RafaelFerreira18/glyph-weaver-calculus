@@ -23,6 +23,9 @@
           <span class="hud-titulo">Atelier do Gradiente</span>
         </div>
         <div class="hud-direita">
+          <button type="button" class="hud-btn hud-btn-olhos" id="olhosArcanosBtn">👁 Olhos Arcanos</button>
+          <button type="button" class="hud-btn hud-btn-caderno" id="cadernoBtn">📖 Caderno</button>
+          <button type="button" class="hud-btn hud-btn-demo" id="demoBtn">▶ Demo</button>
           <label class="hud-toggle">
             <input type="checkbox" id="guidesToggle" checked>
             <span>Guias</span>
@@ -58,7 +61,7 @@
           </div>
         </section>
 
-        <!-- Painel lateral: estado + superfície 3D + dicionário -->
+        <!-- Painel lateral: estado + labs + superfície 3D + dicionário -->
         <aside class="rpg-painel-lateral" aria-label="Painel mágico">
 
           <!-- Estado do sigilo -->
@@ -92,6 +95,19 @@
               </div>
             </div>
           </div>
+
+          <!-- Biblioteca de Glifos — fallback para invocar sigilos sem desenhar -->
+          <section class="biblioteca-painel" aria-label="Biblioteca de Glifos">
+            <h3 class="biblioteca-titulo">✦ Biblioteca de Glifos ✦</h3>
+            <p class="biblioteca-desc">Sem desenhar? Invoque um sigilo diretamente.</p>
+            <div id="bibliotecaBtns" class="biblioteca-btns"></div>
+            <div class="labs-atalhos" id="labsAtalhos" hidden>
+              <span class="labs-atalhos-label">Abrir lab:</span>
+              <button type="button" class="lab-atalho-btn" id="abrirLabParciais">🔬 ∂f</button>
+              <button type="button" class="lab-atalho-btn" id="abrirLabGradiente">🧭 ∇f</button>
+              <button type="button" class="lab-atalho-btn" id="abrirLabClassificar">⚡ Pts</button>
+            </div>
+          </section>
 
           <!-- Superfície 3D — revelada quando um sigilo é reconhecido -->
           <div class="superficie-painel" id="superficiePanel" hidden>
@@ -159,7 +175,7 @@
       </main>
 
       <!-- ═══════════════════════════════════════════════════════
-           CAIXA DE DIÁLOGO RPG (fixa na base da tela)
+           CAIXA DE DIÁLOGO RPG
            ═══════════════════════════════════════════════════════ -->
       <div class="dialogo-rpg" id="dialogoRpg" hidden aria-live="polite">
         <div class="dialogo-retrato-wrapper">
@@ -175,6 +191,200 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — OLHOS ARCANOS (exploração livre)
+         ═══════════════════════════════════════════════════════ -->
+    <div class="olhos-overlay" id="labOlhos" hidden>
+      <div class="olhos-painel">
+        <header class="olhos-header">
+          <h2 class="olhos-titulo">👁 Olhos Arcanos — Exploração Livre</h2>
+          <button class="olhos-fechar" id="olhosFechar" aria-label="Fechar">✕</button>
+        </header>
+        <p class="olhos-sub">
+          Escolha um sigilo e veja o mapa de calor, o campo ∇f e os pontos críticos — tudo em tempo real.
+        </p>
+        <div class="olhos-sigilos" id="olhosSigilos"></div>
+        <div class="olhos-corpo">
+          <canvas class="olhos-mapa" id="olhosCanvas" width="380" height="380"></canvas>
+          <div class="olhos-formula" id="olhosFormula"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — CADERNO DO APRENDIZ
+         ═══════════════════════════════════════════════════════ -->
+    <div class="caderno-overlay" id="cadernoOverlay" hidden>
+      <div class="caderno-painel">
+        <header class="caderno-header">
+          <h2 class="caderno-titulo">📖 Caderno do Aprendiz</h2>
+          <div class="caderno-nav">
+            <button type="button" class="caderno-nav-btn" id="cadernoPrev">◀</button>
+            <span id="cadernoContador">1 / 4</span>
+            <button type="button" class="caderno-nav-btn" id="cadernoNext">▶</button>
+          </div>
+          <button class="caderno-fechar" id="cadernoFechar" aria-label="Fechar">✕</button>
+        </header>
+        <nav class="caderno-tabs" id="cadernoTabs" aria-label="Páginas do caderno"></nav>
+        <div class="caderno-conteudo" id="cadernoConteudo"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — MODO DEMO
+         ═══════════════════════════════════════════════════════ -->
+    <div class="demo-overlay" id="demoOverlay" hidden>
+      <div class="demo-painel">
+        <header class="demo-header">
+          <h2 class="demo-titulo">▶ Modo Demo — Tour pelos 4 Conceitos</h2>
+          <button class="demo-fechar" id="demoFechar" aria-label="Fechar">✕</button>
+        </header>
+        <p id="demoProgresso" class="demo-progresso">Passo 1 / 4</p>
+        <p id="demoDescricao" class="demo-descricao"></p>
+        <p id="demoCeito"     class="demo-conceito"></p>
+        <div class="demo-botoes">
+          <button type="button" class="hud-btn" id="demoBtnProx">Próximo ▶</button>
+          <button type="button" class="hud-btn hud-btn-perigo" id="demoBtnPausar">Encerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — LAB: DERIVADAS PARCIAIS
+         ═══════════════════════════════════════════════════════ -->
+    <div class="lab-overlay" id="labParciais" hidden>
+      <div class="lab-painel">
+        <header class="lab-header">
+          <div class="lab-header-info">
+            <h2 class="lab-titulo">🔬 Derivadas Parciais</h2>
+            <code class="lab-funcao" id="parcialFuncao">f(x, y) = …</code>
+          </div>
+          <button class="lab-fechar" id="labParciaisFechar" aria-label="Fechar">✕</button>
+        </header>
+        <div class="lab-obj-linha">
+          <span class="lab-obj-label">Objetivo</span>
+          <span id="parcialObjetivo">—</span>
+        </div>
+        <div class="lab-corpo">
+          <figure class="lab-grafico" aria-label="Corte em x">
+            <figcaption>Corte em <strong>x</strong> — fixe y = y₀ → z = f(x, y₀)</figcaption>
+            <canvas id="parcialCanvasX" class="lab-canvas" width="340" height="200"></canvas>
+            <p class="lab-resultado" id="parcialResultadoX" hidden></p>
+          </figure>
+          <figure class="lab-grafico" aria-label="Corte em y">
+            <figcaption>Corte em <strong>y</strong> — fixe x = x₀ → z = f(x₀, y)</figcaption>
+            <canvas id="parcialCanvasY" class="lab-canvas" width="340" height="200"></canvas>
+            <p class="lab-resultado" id="parcialResultadoY" hidden></p>
+          </figure>
+        </div>
+        <div class="lab-controles">
+          <div class="lab-controle-linha">
+            <span>x₀ = <strong id="parcialX0Label">1.0</strong></span>
+            <input type="range" id="parcialX0" class="lab-slider" min="-3" max="3" step="0.1" value="1">
+          </div>
+          <div class="lab-controle-linha">
+            <span>y₀ = <strong id="parcialY0Label">1.0</strong></span>
+            <input type="range" id="parcialY0" class="lab-slider" min="-3" max="3" step="0.1" value="1">
+          </div>
+        </div>
+        <div class="lab-pergunta-area">
+          <p id="parcialPerguntaX" class="lab-pergunta-texto"></p>
+          <div class="lab-botoes-resposta" id="parcialBotoesX" hidden>
+            <button type="button" class="lab-btn-resp lab-btn-sobe"  data-resposta="sobe">↑ Sobe</button>
+            <button type="button" class="lab-btn-resp lab-btn-igual" data-resposta="igual">→ Fica igual</button>
+            <button type="button" class="lab-btn-resp lab-btn-desce" data-resposta="desce">↓ Desce</button>
+          </div>
+          <p id="parcialPerguntaY" class="lab-pergunta-texto" hidden></p>
+          <div class="lab-botoes-resposta" id="parcialBotoesY" hidden>
+            <button type="button" class="lab-btn-resp lab-btn-sobe"  data-resposta="sobe">↑ Sobe</button>
+            <button type="button" class="lab-btn-resp lab-btn-igual" data-resposta="igual">→ Fica igual</button>
+            <button type="button" class="lab-btn-resp lab-btn-desce" data-resposta="desce">↓ Desce</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — LAB: VETOR GRADIENTE
+         ═══════════════════════════════════════════════════════ -->
+    <div class="lab-overlay" id="labGradiente" hidden>
+      <div class="lab-painel lab-painel-gradiente">
+        <header class="lab-header">
+          <div class="lab-header-info">
+            <h2 class="lab-titulo">🧭 Vetor Gradiente</h2>
+            <code class="lab-funcao" id="gradienteFuncao">f(x, y) = …</code>
+          </div>
+          <button class="lab-fechar" id="labGradienteFechar" aria-label="Fechar">✕</button>
+        </header>
+        <div class="lab-obj-linha">
+          <span class="lab-obj-label">Objetivo</span>
+          <span id="gradienteObjetivo">—</span>
+        </div>
+        <div class="lab-corpo lab-corpo-gradiente">
+          <canvas id="gradienteCanvas" class="lab-canvas lab-canvas-grande" width="380" height="380"></canvas>
+          <div class="gradiente-info">
+            <p id="gradienteAponta">∇f aponta para: —</p>
+            <p id="gradienteMagnitude">|∇f| = —</p>
+            <p id="gradienteDirecional">D_û f = —</p>
+            <ul class="gradiente-legenda">
+              <li><span class="leg-dot leg-verde"></span>sua previsão (verde)</li>
+              <li><span class="leg-dot leg-rubi"></span>∇f real (vermelho)</li>
+              <li><span class="leg-dot leg-dourado"></span>campo ∇f</li>
+            </ul>
+            <div id="gradienteResultado" class="lab-resultado" hidden></div>
+            <button type="button" class="hud-btn lab-btn-verificar" id="gradienteBtnVerificar">
+              Verificar direção
+            </button>
+          </div>
+        </div>
+        <div class="lab-controles">
+          <div class="lab-controle-linha">
+            <span>Direção û = <strong id="gradienteDirLabel">0</strong>°</span>
+            <input type="range" id="gradienteDir" class="lab-slider" min="0" max="359" step="1" value="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         OVERLAY — LAB: PONTOS CRÍTICOS
+         ═══════════════════════════════════════════════════════ -->
+    <div class="lab-overlay" id="labClassificar" hidden>
+      <div class="lab-painel">
+        <header class="lab-header">
+          <div class="lab-header-info">
+            <h2 class="lab-titulo">⚡ Pontos Críticos</h2>
+            <code class="lab-funcao" id="classificarFuncao">f(x, y) = …</code>
+          </div>
+          <button class="lab-fechar" id="labClassificarFechar" aria-label="Fechar">✕</button>
+        </header>
+        <div class="lab-obj-linha">
+          <span class="lab-obj-label">Objetivo</span>
+          <span id="classificarObjetivo">Classifique cada ponto crítico (∇f = 0) com o teste da Hessiana</span>
+        </div>
+        <div class="lab-corpo lab-corpo-classificar">
+          <div class="classificar-mapa">
+            <p id="classificarPergunta" class="lab-pergunta-texto">Selecione um ponto na lista abaixo.</p>
+            <p id="classificarResultado" class="lab-resultado" hidden></p>
+            <div class="lab-botoes-resposta classificar-botoes" id="classificarBotoes">
+              <button type="button" class="lab-btn-resp classificar-btn" data-tipo="min"    disabled>Mínimo</button>
+              <button type="button" class="lab-btn-resp classificar-btn" data-tipo="max"    disabled>Máximo</button>
+              <button type="button" class="lab-btn-resp classificar-btn" data-tipo="saddle" disabled>Sela</button>
+            </div>
+            <div id="classificarPontosLista" class="classificar-pontos"></div>
+          </div>
+          <div class="classificar-hessiana">
+            <p class="lab-pergunta-texto">
+              <strong>Teste da Hessiana:</strong><br>
+              Det(H) &gt; 0 e f<sub>xx</sub> &gt; 0 → mín<br>
+              Det(H) &gt; 0 e f<sub>xx</sub> &lt; 0 → máx<br>
+              Det(H) &lt; 0 → sela
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="./src/main.js"></script>

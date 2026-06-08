@@ -258,8 +258,8 @@ function recognitionStatus(candidate, best, second, secondSameKind, accepted, th
   const bestInk = best.templateMatch ?? {};
   const clearInkIdentity =
     bestInk.inkScore >= 0.92 &&
-    bestInk.candidateExplainedRatio >= 0.98 &&
-    bestInk.templateCoveredRatio >= 0.98;
+    bestInk.candidateExplainedRatio >= 0.93 &&
+    bestInk.templateCoveredRatio >= 0.94;
   if (!clearInkIdentity && best.confidence - competitor < thresholds.ambiguityGap) {
     return "ambiguous";
   }

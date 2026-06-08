@@ -15,6 +15,13 @@ import { DialogueBox } from "./ui/dialogueBox.js";
 import { MathTeacher } from "./game/mathTeacher.js";
 import { MestraNabla } from "./game/npcs/mestraNabla.js";
 import { PuzzleManager } from "./game/puzzles/puzzleManager.js";
+import { renderGlyphLibrary, setActiveGlyph } from "./ui/glyphLibraryView.js";
+import { PartialsLab } from "./ui/partialsLab.js";
+import { GradientLab } from "./ui/gradientLab.js";
+import { ClassifyLab } from "./ui/classifyLab.js";
+import { OlhosArcanos } from "./ui/olhosArcanos.js";
+import { CadernoView } from "./ui/cadernoView.js";
+import { DemoMode } from "./game/demoMode.js";
 
 const elements = getElements();
 const store = createStrokeStore();
@@ -27,9 +34,16 @@ let previousRing = null;
 let resizeObserver = null;
 
 // ── Sistemas RPG ────────────────────────────────────────────────
-let dialogueBox = null;
-let mathTeacher = null;
+let dialogueBox   = null;
+let mathTeacher   = null;
 let puzzleManager = null;
+let partialsLab   = null;
+let gradientLab   = null;
+let classifyLab   = null;
+let olhosArcanos  = null;
+let cadernoView   = null;
+let demoMode      = null;
+
 /** Elemento reconhecido na última recomputação (evita diálogos repetidos). */
 let elementoAnterior = null;
 
@@ -45,9 +59,7 @@ function setupCanvasSizing() {
 }
 
 function recompute() {
-  if (!dictionary) {
-    return;
-  }
+  if (!dictionary) return;
 
   pipeline = classifyDrawing({
     strokes: store.getStrokes(),
@@ -60,11 +72,8 @@ function recompute() {
   updateSummary({ elements, store, capture, pipeline, spellIR });
   updateDiagnostics({ elements, store, pipeline, spellIR });
 
-  // ── Lógica RPG: validar apenas quando o feitiço é LANÇADO (anel fechado) ──
-  // spellIR.active === true significa que o anel foi fechado e a magia está ativa.
-  // Antes disso (anel aberto), o elemento pode ser parcialmente reconhecido mas
-  // a aprendiz ainda não "lançou" o feitiço — não deve acionar a resposta.
-  const feiticoAtivo = Boolean(spellIR?.active);
+  // ── Lógica RPG: só aciona quando o feitiço é lançado (anel fechado) ──
+  const feiticoAtivo  = Boolean(spellIR?.active);
   const elementoAtual = feiticoAtivo ? (spellIR?.element ?? null) : null;
 
   if (feiticoAtivo && elementoAtual && elementoAtual !== elementoAnterior && mathTeacher) {
@@ -72,7 +81,6 @@ function recompute() {
     elementoAnterior = elementoAtual;
   }
 
-  // Se o canvas foi limpo (anel aberto), resetar para permitir nova tentativa
   if (!feiticoAtivo && elementoAnterior !== null) {
     elementoAnterior = null;
     mathTeacher?.resetar();
@@ -97,7 +105,7 @@ function animationFrame(timestamp) {
       timestamp
     });
   }
-  
+
   renderer.renderEffect({
     spellIR,
     ring: pipeline?.ring,
@@ -147,21 +155,74 @@ async function init() {
     onCommit: recompute
   });
 
-  // ── Inicializar sistemas RPG ────────────────────────────────
+  // ── Sistemas RPG ────────────────────────────────────────────
   dialogueBox   = new DialogueBox();
   puzzleManager = new PuzzleManager();
   mathTeacher   = new MathTeacher(dialogueBox, puzzleManager);
 
-  // Quando o puzzle avança: limpar canvas + resetar estado
+  // ── Labs educacionais ────────────────────────────────────────
+  partialsLab  = new PartialsLab();
+  gradientLab  = new GradientLab();
+  classifyLab  = new ClassifyLab();
+  olhosArcanos = new OlhosArcanos();
+  cadernoView  = new CadernoView();
+  demoMode     = new DemoMode();
+
+  // ── Biblioteca de Glifos ─────────────────────────────────────
+  const bibliotecaContainer = document.getElementById('bibliotecaBtns');
+  if (bibliotecaContainer) renderGlyphLibrary(bibliotecaContainer);
+
+  // ── Botões HUD ───────────────────────────────────────────────
+  document.getElementById('olhosArcanosBtn')?.addEventListener('click', () => olhosArcanos.alternar());
+  document.getElementById('olhosFechar')?.addEventListener('click',     () => olhosArcanos.fechar());
+  document.getElementById('cadernoBtn')?.addEventListener('click',      () => cadernoView.alternar());
+  document.getElementById('cadernoFechar')?.addEventListener('click',   () => cadernoView.fechar());
+  document.getElementById('demoBtn')?.addEventListener('click',         () => demoMode.iniciar());
+
+  // ── Fechar labs (botão ✕ interno) ───────────────────────────
+  document.getElementById('labParciaisFechar')?.addEventListener('click',    () => { document.getElementById('labParciais').hidden    = true; });
+  document.getElementById('labGradienteFechar')?.addEventListener('click',   () => { document.getElementById('labGradiente').hidden   = true; });
+  document.getElementById('labClassificarFechar')?.addEventListener('click', () => { document.getElementById('labClassificar').hidden = true; });
+
+  // ── Atalhos de reabertura dos labs ────────────────────────────
+  document.getElementById('abrirLabParciais')?.addEventListener('click',    () => { if (partialsLab.sigilo)  document.getElementById('labParciais').hidden    = false; });
+  document.getElementById('abrirLabGradiente')?.addEventListener('click',   () => { if (gradientLab.sigilo)  document.getElementById('labGradiente').hidden   = false; });
+  document.getElementById('abrirLabClassificar')?.addEventListener('click', () => { if (classifyLab.sigilo)  document.getElementById('labClassificar').hidden = false; });
+
+  // ── Evento: sigilo reconhecido (desenhado ou clicado na biblioteca) ──
+  document.addEventListener('sigilo:reconhecido', (e) => {
+    const el = e.detail.elemento;
+    partialsLab.atualizar(el);
+    gradientLab.atualizar(el);
+    classifyLab.atualizar(el);
+    cadernoView.desbloquearSigilo(el);
+    setActiveGlyph(bibliotecaContainer, el);
+
+    // Mostrar atalhos de labs no aside
+    const atalhos = document.getElementById('labsAtalhos');
+    if (atalhos) atalhos.hidden = false;
+  });
+
+  // ── Evento: sigilo escolhido da Biblioteca (fallback sem desenhar) ──
+  document.addEventListener('glifo:escolhido', (e) => {
+    const el = e.detail.element;
+    if (!el) return;
+    mathTeacher.ensinar(el);
+    elementoAnterior = el;
+  });
+
+  // ── Progresso dos puzzles ────────────────────────────────────
   document.addEventListener('puzzle:avancou', () => {
     store.clear();
     previousRing = null;
     elementoAnterior = null;
     mathTeacher.resetar();
+    partialsLab.resetar();
+    gradientLab.resetar();
+    classifyLab.resetar();
     recompute();
   });
 
-  // Quando novo puzzle é apresentado: iniciar diálogo de apresentação
   document.addEventListener('puzzle:novo', (e) => {
     dialogueBox.iniciarSequencia(
       MestraNabla.nome,
@@ -177,7 +238,6 @@ async function init() {
     recompute();
     requestAnimationFrame(animationFrame);
 
-    // Boas-vindas da Mestra Nabla → ao fechar, inicia o primeiro desafio
     dialogueBox.aoFechar(() => puzzleManager.iniciar());
     dialogueBox.iniciarSequencia(
       MestraNabla.nome,
