@@ -78,6 +78,49 @@ export const MestraNabla = {
       'O vento nunca para de oscilar — infinitos nexos de poder espalhados pela realidade!'
     ],
 
+    /** Intro do Ano II — Os Ventos da Mudança (Derivadas Parciais). */
+    introAnoII: [
+      'Bem-vinda ao segundo ano do Atelier, aprendiz. Os Ventos da Mudança chegaram.',
+      'Até agora você usou os sigilos para invocar funções de f(x, y). Agora irá aprender a medir como elas mudam.',
+      'Derivadas parciais: ∂f/∂x mede a variação de f na direção x, mantendo y fixo — e vice-versa.',
+      'Pense assim: se a superfície é uma paisagem montanhosa, a derivada parcial é a inclinação em cada direção separada.',
+      'O gradiente ∇f = (∂f/∂x, ∂f/∂y) reúne ambas as derivadas em um vetor que aponta para onde a magia cresce mais rápido.',
+      'Neste ano você vai entender por que o gradiente é sempre perpendicular às curvas de nível do sigilo.',
+      'Prepare seu caderno e seus olhos arcanos. O vento da mudança não espera, aprendiz.'
+    ],
+
+    /** Intro do Ano III — Topografia Mística (Vetor Gradiente e Integrais Múltiplas). */
+    introAnoIII: [
+      'Você chegou ao terceiro ano, aprendiz. Bem-vinda à Topografia Mística.',
+      'Neste ano você vai trabalhar com integrais duplas e triplas — somar infinitos valores de uma função sobre uma região.',
+      'Se no Ano II o gradiente media inclinações, aqui você aprende a calcular volumes, massas e fluxos mágicos.',
+      '∬_D f(x,y) dA: a integral dupla acumula a magia em toda uma região D do plano.',
+      'Você aprenderá a trocar de coordenadas — polares, cilíndricas, esféricas — para simplificar a geometria dos sigilos.',
+      'O teorema de Fubini dirá quando você pode integrar em uma direção por vez. Ordem importa.',
+      'A topografia do mundo mágico está prestes a se revelar em sua totalidade. Siga em frente.'
+    ],
+
+    /** Intro do Ano IV — Os Pontos de Poder (Otimização e Multiplicadores de Lagrange). */
+    introAnoIV: [
+      'O quarto e último ano do Atelier, aprendiz. Os Pontos de Poder aguardam.',
+      'Você já classifica pontos críticos pela Hessiana — máximos, mínimos, selas. Agora vai dominá-los.',
+      'Otimização com restrições: o método dos Multiplicadores de Lagrange revela onde a magia é máxima ou mínima dentro de um labirinto de condições.',
+      '∇f = λ ∇g — o gradiente da função e o da restrição devem ser paralelos nos pontos de equilíbrio.',
+      'Você também aprenderá sobre campos vetoriais, divergência, rotacional e os grandes teoremas de Green, Stokes e Gauss.',
+      'Esses teoremas conectam o interior de uma região com sua fronteira — são os segredos mais profundos dos sigilos arcanos.',
+      'Este é o ano em que a matemática e a magia se tornam inseparáveis. Mostre-me o que você aprendeu.'
+    ],
+
+    /** Conclusão do Ano I — exibido após o último desafio ser resolvido. */
+    conclusaoAnoI: [
+      'Extraordinário, aprendiz. Você dominou os 5 sigilos primários do Atelier.',
+      'Fogo, Terra, Água, Vento, Luz — cada sigilo é uma janela para uma superfície diferente do ℝ².',
+      'Você aprendeu a calcular derivadas parciais, construir o gradiente ∇f e classificar pontos críticos pela Hessiana.',
+      'Com o determinante de H você distingue mínimos, máximos e selas — a geometria invisível da superfície revelada.',
+      'O Ano II aguarda: integrais múltiplas, fluxo de campos vetoriais e a Regra da Cadeia em profundidade.',
+      'Descanse agora, aprendiz. O Atelier do Gradiente sempre terá novos mistérios para quem souber olhar.'
+    ],
+
     /** Ensinamentos para o Sigilo da Luz: f(x,y) = ln(x² + y² + 1) */
     luz: [
       'Excelente! O Sigilo da Luz, último dos sigilos primários.',

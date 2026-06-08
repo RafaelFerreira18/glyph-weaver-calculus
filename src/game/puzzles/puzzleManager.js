@@ -16,6 +16,9 @@
 
 import { DESAFIOS } from './desafios.js';
 
+const NOMES_ANOS = ['', 'Caderno dos Sigilos', 'Os Ventos da Mudança', 'Topografia Mística', 'Os Pontos de Poder'];
+const CONCEITOS_ANOS = ['', 'Sigilos primários', 'Derivadas parciais', 'Vetor gradiente e Integrais', 'Otimização e Campos vetoriais'];
+
 export class PuzzleManager {
   constructor() {
     /** Lista completa de desafios do Ano I. */
@@ -29,6 +32,9 @@ export class PuzzleManager {
 
     /** Quando false, ignora tentativas (ex: durante diálogo de conclusão). */
     this.aguardandoResposta = false;
+
+    /** Ano atual (1–4). */
+    this.faseAtual = 1;
   }
 
   // ── API pública ────────────────────────────────────────────────
@@ -68,6 +74,16 @@ export class PuzzleManager {
   }
 
   /**
+   * Avança para o próximo ANO após conclusão do atual.
+   * Dispara `fase:nova` para que main.js exiba o diálogo e painel do novo ano.
+   */
+  avancarFase() {
+    if (this.faseAtual >= 4) return;
+    this.faseAtual += 1;
+    document.dispatchEvent(new CustomEvent('fase:nova', { detail: { fase: this.faseAtual } }));
+  }
+
+  /**
    * Avança para o próximo desafio após o jogador acertar.
    * Deve ser chamado após o diálogo de acerto terminar.
    */
@@ -80,7 +96,6 @@ export class PuzzleManager {
     this.indice += 1;
 
     if (this.indice < this.desafios.length) {
-      // Aguarda um momento para a transição ser suave
       setTimeout(() => this._apresentarDesafio(), 1400);
     } else {
       setTimeout(() => this._mostrarConclusao(), 1400);
@@ -120,18 +135,31 @@ export class PuzzleManager {
     `;
   }
 
-  /** Exibe mensagem de conclusão do Ano I. */
+  /** Exibe mensagem de conclusão do ano atual e botão para avançar. */
   _mostrarConclusao() {
     const painel = document.getElementById('desafioPanel');
+    const nomeAtual  = NOMES_ANOS[this.faseAtual]    || `Ano ${this.faseAtual}`;
+    const nomeProx   = NOMES_ANOS[this.faseAtual + 1] || null;
+    const conceitoProx = CONCEITOS_ANOS[this.faseAtual + 1] || null;
+    const temProximo = this.faseAtual < 4;
+
     if (painel) {
+      painel.hidden = false;
       painel.innerHTML = `
         <div class="desafio-cabecalho">
-          <span class="desafio-titulo">✦ Ano I Concluído! ✦</span>
+          <span class="desafio-titulo">✦ Ano ${this.faseAtual} Concluído! ✦</span>
         </div>
         <p class="desafio-enunciado">
-          Você dominou todos os 5 sigilos primários do Atelier do Gradiente.
-          O Ano II — Derivadas Parciais e Gradiente — aguarda, aprendiz.
+          Você completou todos os desafios de <strong>${nomeAtual}</strong>.
+          ${temProximo
+            ? `O Ano ${this.faseAtual + 1} — <em>${nomeProx}</em> (${conceitoProx}) — aguarda, aprendiz.`
+            : 'Você concluiu todos os 4 anos do Atelier do Gradiente. Parabéns, mestre!'}
         </p>
+        ${temProximo
+          ? `<button type="button" id="btnProximoAno" class="desafio-btn-avancar">
+               ✦ Ir para o Ano ${this.faseAtual + 1} →
+             </button>`
+          : ''}
       `;
     }
 

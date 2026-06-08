@@ -187,6 +187,9 @@ export class MathTeacher {
 
     /** Elemento atualmente processado (evita re-disparo do mesmo sigilo). */
     this.elementoAtual = null;
+
+    /** Verdadeiro enquanto o diálogo de acerto está tocando — bloqueia nova validação. */
+    this._aguardandoAvanco = false;
   }
 
   /**
@@ -197,6 +200,7 @@ export class MathTeacher {
    */
   ensinar(elemento) {
     if (elemento === this.elementoAtual) return;
+    if (this._aguardandoAvanco) return;
     this.elementoAtual = elemento;
 
     // Notifica os labs e outros ouvintes sobre o sigilo reconhecido
@@ -219,7 +223,8 @@ export class MathTeacher {
    * Oculta o painel de superfície para preparar o próximo desafio.
    */
   resetar() {
-    this.elementoAtual = null;
+    this.elementoAtual     = null;
+    this._aguardandoAvanco = false;
     this._ocultarPainelSuperficie();
   }
 
@@ -245,19 +250,22 @@ export class MathTeacher {
     }
     this._mostrarInfoMatematica(sigilo);
 
-    // Ao terminar o diálogo de acerto → avançar puzzle (auto-limpa canvas)
-    this.dialogueBox.aoFechar(() => this.puzzleManager.avancar());
+    // Bloqueia novas validações enquanto o diálogo de acerto toca
+    this._aguardandoAvanco = true;
+    this.dialogueBox.aoFechar(() => {
+      this._aguardandoAvanco = false;
+      this.puzzleManager.avancar();
+    });
 
     // Iniciar diálogo de acerto (do banco de desafios)
     const falas = this.puzzleManager.desafioAtual?.dialogoAcerto ?? [];
     this.dialogueBox.iniciarSequencia(MestraNabla.nome, MestraNabla.personagem, falas);
   }
 
-  /**
-   * Fluxo de ERRO: inicia diálogo de dica específico para o elemento errado.
-   * Não exibe a superfície 3D (o jogador não acertou ainda).
-   */
   _responderErro(elemento) {
+    // Limpa qualquer callback de avancar() pendente de tentativa anterior.
+    this.dialogueBox.aoFechar(null);
+
     const falas = this.puzzleManager.feedbackErro(elemento);
     this.dialogueBox.iniciarSequencia(MestraNabla.nome, MestraNabla.personagem, falas);
   }

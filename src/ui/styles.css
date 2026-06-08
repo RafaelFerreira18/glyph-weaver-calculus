@@ -559,6 +559,31 @@ footer {
   opacity: 0.85;
 }
 
+.desafio-btn-avancar {
+  display: block;
+  width: 100%;
+  margin-top: 0.7rem;
+  padding: 0.45rem 0.8rem;
+  background: #241b16;
+  color: #f4dc95;
+  border: 1.5px solid #c9a84c;
+  border-radius: 6px;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.desafio-btn-avancar:hover {
+  background: #c9a84c;
+  color: #241b16;
+}
+.desafio-btn-avancar:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 /* ── Painel lateral ── */
 .rpg-painel-lateral {
   width: 320px;

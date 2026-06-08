@@ -64,7 +64,6 @@ export class PartialsLab {
     catch (e) { console.warn('[PartialsLab] parse falhou:', e.message); return; }
 
     this._fase = 'preverX';
-    this.el.secao.hidden = false;
 
     if (this.el.funcao)   this.el.funcao.textContent   = dados.funcao;
     if (this.el.objetivo) this.el.objetivo.textContent =

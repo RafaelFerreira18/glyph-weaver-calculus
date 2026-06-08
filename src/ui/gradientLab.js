@@ -56,7 +56,6 @@ export class GradientLab {
       this._campo = gradientField(this.node, { xMin: -3, xMax: 3, yMin: -3, yMax: 3 }, 0.75);
     } catch (_) { this._campo = []; }
 
-    this.el.secao.hidden = false;
     if (this.el.funcao)   this.el.funcao.textContent   = dados.funcao;
     if (this.el.objetivo) this.el.objetivo.textContent =
       `Use o slider para apontar a direção de maior crescimento de ${dados.nome} em (0, 0).`;

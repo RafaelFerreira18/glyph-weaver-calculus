@@ -55,7 +55,6 @@ export class ClassifyLab {
     this._pontoAtivo = null;
     this._respostas  = {};
 
-    this.el.secao.hidden = false;
     if (this.el.funcao)   this.el.funcao.textContent   = dados.funcao;
     if (this.el.objetivo) this.el.objetivo.textContent =
       `Classifique os pontos críticos de ${dados.nome} usando o teste da Hessiana.`;

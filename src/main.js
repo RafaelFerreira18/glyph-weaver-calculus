@@ -47,6 +47,10 @@ let demoMode      = null;
 /** Elemento reconhecido na última recomputação (evita diálogos repetidos). */
 let elementoAnterior = null;
 
+/** SpellIR e ring sintéticos para animação de quick cast (clique na biblioteca). */
+let quickCastSpellIR = null;
+let quickCastRing    = null;
+
 function setupCanvasSizing() {
   resizeObserver = setupResponsiveCanvasSizing({
     elements,
@@ -96,19 +100,32 @@ function animationFrame(timestamp) {
     showDebug: elements.diagnosticsToggle.checked
   });
 
-  if (spellIR.active) {
+  // Expirar quick cast
+  if (quickCastSpellIR) {
+    const durMs = quickCastSpellIR.duration * 1000 + 500;
+    if (timestamp - quickCastSpellIR.activatedAt > durMs) {
+      quickCastSpellIR = null;
+      quickCastRing    = null;
+    }
+  }
+
+  // Usa quick cast se não houver feitiço desenhado ativo
+  const activeSpellIR = (quickCastSpellIR && !spellIR?.active) ? quickCastSpellIR : spellIR;
+  const activeRing    = (quickCastSpellIR && !spellIR?.active) ? quickCastRing    : pipeline?.ring;
+
+  if (activeSpellIR?.active) {
     renderer.renderActivatedGlyph({
-      activatedAt: spellIR.activatedAt,
-      duration: spellIR.duration,
-      strokes: store.getStrokes(),
+      activatedAt: activeSpellIR.activatedAt,
+      duration:    activeSpellIR.duration,
+      strokes:     store.getStrokes(),
       pipeline,
       timestamp
     });
   }
 
   renderer.renderEffect({
-    spellIR,
-    ring: pipeline?.ring,
+    spellIR:    activeSpellIR,
+    ring:       activeRing,
     timestamp,
     showGuides: elements.guidesToggle.checked
   });
@@ -203,12 +220,51 @@ async function init() {
     if (atalhos) atalhos.hidden = false;
   });
 
-  // ── Evento: sigilo escolhido da Biblioteca (fallback sem desenhar) ──
+  // ── Evento: sigilo escolhido da Biblioteca — quick cast ──────────
   document.addEventListener('glifo:escolhido', (e) => {
     const el = e.detail.element;
     if (!el) return;
+
+    // Animação de quick cast centrada no canvas
+    const canvas = elements.glyphCanvas;
+    const cx     = canvas.width  / 2;
+    const cy     = canvas.height / 2;
+
+    quickCastRing = {
+      found:    true,
+      complete: true,
+      center:   { x: cx, y: cy },
+      radius:   Math.min(canvas.width, canvas.height) * 0.27,
+    };
+
+    quickCastSpellIR = {
+      type:                 'SpellIR',
+      active:               true,
+      valid:                true,
+      prepared:             false,
+      element:              el,
+      activatedAt:          performance.now(),
+      duration:             5,
+      focus:                0.65,
+      spread:               0.35,
+      force:                0.55,
+      range:                0.5,
+      quality:              0.75,
+      stability:            0.75,
+      neatness:             0.8,
+      gravity:              1,
+      directionCoherence:   0,
+      direction:            { x: 0, y: 0, z: 1, xTiltDeg: 0, yTiltDeg: 0, tiltFromZDeg: 0 },
+      primaryManifestation: 'none',
+      manifestations:       {},
+      warnings:             [],
+      signature:            `quickcast-${el}-${Date.now()}`,
+      primarySizeNorm:      0.6,
+      effectScale:          1,
+    };
+
+    document.dispatchEvent(new CustomEvent('sigilo:reconhecido', { detail: { elemento: el } }));
     mathTeacher.ensinar(el);
-    elementoAnterior = el;
   });
 
   // ── Progresso dos puzzles ────────────────────────────────────
@@ -229,6 +285,42 @@ async function init() {
       MestraNabla.personagem,
       e.detail.desafio.dialogoDesafio
     );
+  });
+
+  document.addEventListener('puzzle:concluido', () => {
+    const btn = document.getElementById('btnProximoAno');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      puzzleManager.avancarFase();
+    });
+  });
+
+  document.addEventListener('fase:nova', (e) => {
+    const fase = e.detail.fase;
+    const chaves = ['', 'I', 'II', 'III', 'IV'];
+    const dialogoKey = `introAno${chaves[fase]}`;
+    const dialogo = MestraNabla.dialogos[dialogoKey];
+
+    if (dialogo) {
+      dialogueBox.iniciarSequencia(MestraNabla.nome, MestraNabla.personagem, dialogo);
+    }
+
+    // Painel de placeholder para anos ainda sem puzzles implementados
+    const painel = document.getElementById('desafioPanel');
+    if (painel) {
+      painel.hidden = false;
+      const nomes = ['', 'Caderno dos Sigilos', 'Os Ventos da Mudança', 'Topografia Mística', 'Os Pontos de Poder'];
+      painel.innerHTML = `
+        <div class="desafio-cabecalho">
+          <span class="desafio-numero">Ano ${fase}</span>
+          <span class="desafio-titulo">${nomes[fase] || ''}</span>
+        </div>
+        <p class="desafio-enunciado">
+          Este ano está em preparação. Use os laboratórios e o Caderno de Sigilos para explorar os conceitos.
+        </p>
+      `;
+    }
   });
 
   try {
