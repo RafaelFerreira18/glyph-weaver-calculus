@@ -287,40 +287,30 @@ async function init() {
     );
   });
 
+  // ── Feedback visual CORRETO / ERRADO ─────────────────────────
+  const feedbackEl = document.getElementById('feedbackOverlay');
+  function mostrarFeedback(tipo) {
+    if (!feedbackEl) return;
+    feedbackEl.removeAttribute('hidden');
+    feedbackEl.className = `feedback-overlay feedback-${tipo}`;
+    feedbackEl.innerHTML = `<span class="feedback-texto">${tipo === 'correto' ? '✓ CORRETO' : '✗ ERRADO'}</span>`;
+    setTimeout(() => {
+      feedbackEl.setAttribute('hidden', '');
+      feedbackEl.className = 'feedback-overlay';
+    }, 1600);
+  }
+
+  document.addEventListener('resposta:correto', () => mostrarFeedback('correto'));
+  document.addEventListener('resposta:errado',  () => mostrarFeedback('errado'));
+
   document.addEventListener('puzzle:concluido', () => {
-    const btn = document.getElementById('btnProximoAno');
-    if (!btn) return;
-    btn.addEventListener('click', () => {
-      btn.disabled = true;
-      puzzleManager.avancarFase();
-    });
-  });
-
-  document.addEventListener('fase:nova', (e) => {
-    const fase = e.detail.fase;
-    const chaves = ['', 'I', 'II', 'III', 'IV'];
-    const dialogoKey = `introAno${chaves[fase]}`;
-    const dialogo = MestraNabla.dialogos[dialogoKey];
-
-    if (dialogo) {
-      dialogueBox.iniciarSequencia(MestraNabla.nome, MestraNabla.personagem, dialogo);
-    }
-
-    // Painel de placeholder para anos ainda sem puzzles implementados
-    const painel = document.getElementById('desafioPanel');
-    if (painel) {
-      painel.hidden = false;
-      const nomes = ['', 'Caderno dos Sigilos', 'Os Ventos da Mudança', 'Topografia Mística', 'Os Pontos de Poder'];
-      painel.innerHTML = `
-        <div class="desafio-cabecalho">
-          <span class="desafio-numero">Ano ${fase}</span>
-          <span class="desafio-titulo">${nomes[fase] || ''}</span>
-        </div>
-        <p class="desafio-enunciado">
-          Este ano está em preparação. Use os laboratórios e o Caderno de Sigilos para explorar os conceitos.
-        </p>
-      `;
-    }
+    setTimeout(() => {
+      dialogueBox.iniciarSequencia(
+        MestraNabla.nome,
+        MestraNabla.personagem,
+        MestraNabla.dialogos.conclusaoAnoI
+      );
+    }, 200);
   });
 
   try {

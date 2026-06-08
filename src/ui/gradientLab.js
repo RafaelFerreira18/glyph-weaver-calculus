@@ -262,16 +262,16 @@ export class GradientLab {
 
           // Label
           ctx.fillStyle = '#ff3366';
-          ctx.font = 'bold 11px Courier New';
-          ctx.fillText('∇f real', ex_r + 6, ey_r - 4);
+          ctx.font = 'bold 14px Courier New';
+          ctx.fillText('∇f real', ex_r + 8, ey_r - 5);
         }
       } catch (_) { /* skip */ }
     }
 
     // ── 6. Legenda ───────────────────────────────────────────
-    ctx.font = '10px Courier New';
+    ctx.font = '13px Courier New';
     ctx.fillStyle = '#00ff88';
-    ctx.fillText('← sua previsão', 6, H - 22);
+    ctx.fillText('← sua previsão', 6, H - 24);
     if (this._revelado) {
       ctx.fillStyle = '#ff3366';
       ctx.fillText('∇f real ↑', 6, H - 10);
@@ -280,9 +280,9 @@ export class GradientLab {
     // ── 7. Ponto central ────────────────────────────────────
     ctx.fillStyle = '#fff';
     ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#0d0703';
-    ctx.font = 'bold 9px Courier New';
-    ctx.fillText('(0,0)', cx + 7, cy - 6);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 12px Courier New';
+    ctx.fillText('(0,0)', cx + 8, cy - 7);
   }
 }
 

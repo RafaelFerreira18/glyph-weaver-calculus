@@ -250,6 +250,8 @@ export class MathTeacher {
     }
     this._mostrarInfoMatematica(sigilo);
 
+    document.dispatchEvent(new CustomEvent('resposta:correto'));
+
     // Bloqueia novas validações enquanto o diálogo de acerto toca
     this._aguardandoAvanco = true;
     this.dialogueBox.aoFechar(() => {
@@ -263,6 +265,7 @@ export class MathTeacher {
   }
 
   _responderErro(elemento) {
+    document.dispatchEvent(new CustomEvent('resposta:errado'));
     // Limpa qualquer callback de avancar() pendente de tentativa anterior.
     this.dialogueBox.aoFechar(null);
 

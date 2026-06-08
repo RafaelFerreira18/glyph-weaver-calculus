@@ -24,7 +24,7 @@ export const DESAFIOS = [
   // ─────────────────────────────────────────────────────────────────────
   {
     id: 'ano1_fogo',
-    titulo: 'Desafio I — O Vale de Fogo',
+    titulo: 'Desafio I — O Vale Central',
     enunciado:
       'Uma superfície mágica que cresce simetricamente em todas as direções a partir da origem, formando um vale circular perfeito. Seu único ponto crítico é na origem — um mínimo. Qual sigilo representa essa função?',
     dica: '💡 Tigela côncava. Det(H) > 0 e fxx > 0 → mínimo local.',
@@ -143,14 +143,14 @@ export const DESAFIOS = [
   // ─────────────────────────────────────────────────────────────────────
   {
     id: 'ano1_agua',
-    titulo: 'Desafio III — O Pico da Água',
+    titulo: 'Desafio III — O Pico Central',
     enunciado:
-      "Uma função que atinge seu valor máximo na origem e decai exponencialmente em todas as direções — como uma gota d'água perfeita. Det(H) > 0 e fxx < 0 na origem. Qual sigilo invoca esse pico?",
+      'Uma função que atinge seu valor MÁXIMO na origem e decai exponencialmente em todas as direções — o oposto de uma tigela. Det(H) > 0 e fxx < 0 na origem. Qual sigilo invoca esse pico?',
     dica: '💡 Máximo na origem. fxx < 0 → concavidade para baixo. Decaimento exponencial.',
     respostaCorreta: 'water',
 
     dialogoDesafio: [
-      'Terceiro desafio! Agora o oposto do que você viu no Fogo.',
+      'Terceiro desafio! Agora o oposto geométrico do que vimos antes.',
       'A superfície que procuro também tem gradiente nulo na origem.',
       'Mas a Hessiana revela algo diferente: fxx = −2 < 0.',
       'Det(H) > 0 e fxx < 0 → MÁXIMO LOCAL na origem.',
@@ -195,7 +195,7 @@ export const DESAFIOS = [
   // ─────────────────────────────────────────────────────────────────────
   {
     id: 'ano1_vento',
-    titulo: 'Desafio IV — As Ondas do Vento',
+    titulo: 'Desafio IV — As Ondas Infinitas',
     enunciado:
       'Uma superfície com infinitos pontos críticos espalhados periodicamente pelo plano — picos, vales e selas alternados sem fim. O gradiente oscila com o ritmo de funções trigonométricas. Que sigilo é esse?',
     dica: '💡 Funções periódicas geram infinitos pontos críticos. Seno e cosseno.',
@@ -249,18 +249,18 @@ export const DESAFIOS = [
   // ─────────────────────────────────────────────────────────────────────
   {
     id: 'ano1_luz',
-    titulo: 'Desafio V — A Sabedoria da Luz',
+    titulo: 'Desafio V — O Crescimento Moderado',
     enunciado:
-      'Como o Fogo, esta função tem mínimo na origem e cresce em todas as direções. Mas diferente do Fogo (que cresce quadraticamente), ela cresce cada vez MAIS DEVAGAR — logaritmicamente. Qual sigilo carrega essa sabedoria contida?',
+      'Como o primeiro sigilo estudado, esta função tem mínimo na origem e cresce em todas as direções. Mas aqui o crescimento desacelera com a distância — cada vez MAIS DEVAGAR. Ao contrário do crescimento quadrático, este é logarítmico. Qual sigilo é este?',
     dica: '💡 Mínimo na origem, crescimento logarítmico. ∇f diminui com a distância.',
     respostaCorreta: 'light',
 
     dialogoDesafio: [
       'Último desafio do Ano I, aprendiz. Você chegou longe!',
       'A superfície que procuro guarda um segredo sutil.',
-      'Como o Fogo, ela tem mínimo na origem: Det(H) > 0 e fxx > 0.',
+      'Como o primeiro sigilo que estudamos, ela tem mínimo na origem: Det(H) > 0 e fxx > 0.',
       'Mas o crescimento é fundamentalmente diferente.',
-      'O Fogo (x²+y²) tem gradiente (2x, 2y) — cresce linearmente com a distância.',
+      'A função x²+y² tem gradiente (2x, 2y) — cresce linearmente com a distância.',
       'A função que busco tem gradiente que DIMINUI conforme você se afasta.',
       'Quanto mais longe da origem, menor o incremento. Esse é o logaritmo.',
       'Qual sigilo representa esse crescimento sábio e moderado?'

@@ -312,8 +312,8 @@ export class PartialsLab {
         // Anotação da derivada
         const sinal = slope >= 0 ? '+' : '';
         ctx.fillStyle = COR_TANGENTE;
-        ctx.font = '11px Courier New';
-        ctx.fillText(`∂f/∂${eixo} = ${slope.toFixed(2)}`, pad + 2, pad + 12);
+        ctx.font = 'bold 14px Courier New';
+        ctx.fillText(`∂f/∂${eixo} = ${slope.toFixed(2)}`, pad + 4, pad + 16);
       } catch (_) { /* skip */ }
     }
 
@@ -325,8 +325,8 @@ export class PartialsLab {
     ctx.stroke();
 
     // Rótulo do eixo
-    ctx.fillStyle = 'rgba(201,168,76,0.55)';
-    ctx.font = '10px IM Fell English, serif';
+    ctx.fillStyle = 'rgba(201,168,76,0.8)';
+    ctx.font = '13px IM Fell English, serif';
     const label = eixo === 'x'
       ? `f(x, ${y0.toFixed(1)}) — corte y₀`
       : `f(${x0.toFixed(1)}, y) — corte x₀`;
